@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="centered-btn-div">
+        <button class="centered-btn" id="add-store">Add a store</button>
+    </div>
+    <div class="centered-btn-div">
+        <button class="cancel-store-add" id="cancel-add-store">Changed my mind, cancel</button>
+    </div>
+    <section id="store-search">
+        <div class="flex-sidebyside" class="flex-for-col" id="store-flexbox">
+            <!-- why doesnt the second class above work when i make it a flexbox - trying to avoid having to repeat css -->
+            <header>
+                <h3>Search for your store</h3>
+            </header>
+        </div>
+        <div class="flex-sidebyside" class="flex-for-col" id="item-flexbox">
+            <header>
+                <h3>Add your items</h3>
+            </header>
+        </div>
+    </section>
+    <script src="{{ url_for('static',filename='shopping.js') }}"></script>
+{% endblock %}

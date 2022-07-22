@@ -5,7 +5,11 @@ app = Flask('__name__')
 
 @app.route('/')
 def index():
-    return '<h1> Hello! </h1>'
+    return render_template('index.html')
+
+@app.route('/list')
+def shopping_list():
+    return render_template('shopping.html')
 
 
 if __name__ == '__main__':
