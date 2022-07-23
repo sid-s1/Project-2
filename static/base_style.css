@@ -42,19 +42,23 @@
     box-shadow: 0px 0px;
 }
 
-#store-search {
+#store-search, .centered-list-display {
     display: flex;
     justify-content: center;
+}
+.centered-list-child {
+    width: 800px;
+    height: 800px;
+    border: 2px solid black;
+    padding: 2%;
+    margin: 5%;
+    text-align: justify;
 }
 .flex-sidebyside {
     width: 350px;
     height: 500px;
     border: 2px solid black;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 .flex-for-col {
     display: flex;

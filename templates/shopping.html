@@ -8,17 +8,21 @@
         <button class="cancel-store-add" id="cancel-add-store">Changed my mind, cancel</button>
     </div>
     <section id="store-search">
-        <div class="flex-sidebyside" class="flex-for-col" id="store-flexbox">
-            <!-- why doesnt the second class above work when i make it a flexbox - trying to avoid having to repeat css -->
+        <div class="flex-sidebyside flex-for-col" id="store-flexbox">
             <header>
                 <h3>Search for your store</h3>
             </header>
+            <form action="/list" class="flex-for-col" id="search-form" method="POST">
+                <input type="text" class="bordered-input-box" id="search-store-field" name="searched-store">
+                <button class="centered-btn" id="form-btn">Search Store</button>
+            </form>
         </div>
-        <div class="flex-sidebyside" class="flex-for-col" id="item-flexbox">
+        <div class="flex-sidebyside flex-for-col" id="item-flexbox">
             <header>
                 <h3>Add your items</h3>
             </header>
         </div>
     </section>
     <script src="{{ url_for('static',filename='shopping.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ key }}&libraries=places&callback=initMap"></script>
 {% endblock %}
