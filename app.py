@@ -2,8 +2,8 @@ from flask import Flask, request, render_template
 import requests, os, psycopg2
 
 DATABASE_URL = os.environ.get('DATABASE_URL','dbname=shopping_list')
-key_from_file = open('sec_key.txt','r').read()
-SECRET_KEY = os.environ.get('SECRET_KEY',key_from_file)
+# key_from_file = open('sec_key.txt','r').read()
+SECRET_KEY = os.environ.get('SECRET_KEY','sidisgr8')
 
 app = Flask('__name__')
 app.secret_key = SECRET_KEY.encode()
