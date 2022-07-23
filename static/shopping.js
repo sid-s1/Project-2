@@ -27,7 +27,7 @@ addStore.addEventListener('click', addStoreFunc);
 
 function initMap() {
     autoComplete = new google.maps.places.Autocomplete(searchField, {
-        types: ['establishment'],
+        types: ['cafe', 'convenience_store', 'department_store', 'drugstore', 'supermarket'],
         componentRestrictions: { 'country': ['AU'] },
         fields: ['place_id', 'geometry', 'name']
     });
