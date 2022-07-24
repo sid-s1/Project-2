@@ -58,13 +58,24 @@ def shopping_list_search():
 
 @app.route('/display')
 def list_route_display():
+    items_by_store = []
     # lat_long_farthest = app_service.farthest_destination()
     # lat = lat_long_farthest[0]
     # long = lat_long_farthest[1]
     if session.get('email') != None:
         all_ids = app_service.all_ids()
         lat_long = app_service.retrieve_address(session.get('email'))
-        return render_template('route.html',key=api_key,ids=all_ids,user=session.get('email'),lat=lat_long[0],long=lat_long[1])
+        user_id = app_service.retrieve_userID(session.get('email'))
+        stores = app_service.retrieve_stores(user_id)
+        for store in stores:
+            items = app_service.retrieve_items(user_id,store['id'])
+            items_by_store.append({
+                'id':store['id'],
+                'store':store['store'],
+                'location':store['location'],
+                'item_list':items
+            })
+        return render_template('route.html',key=api_key,ids=all_ids,user=session.get('email'),lat=lat_long[0],long=lat_long[1],stores=items_by_store)
 
 @app.route('/signup')
 def signup_page():
@@ -119,7 +130,7 @@ def logout():
 
 @app.route('/add_item',methods=["POST"])
 def add_item_action():
-    store_id = request.form.get('store-id')
+    store_id = request.form.get('selected-store')
     added_item = request.form.get('added-item')
     user_id = app_service.retrieve_userID(session.get('email'))
     app_service.store_items(user_id,store_id,added_item)

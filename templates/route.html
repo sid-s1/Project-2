@@ -2,16 +2,27 @@
 
 {% block body %}
     <section class="centered-list-display">
-        <div class="centered-list-child flex-for-col">
+        <div class="flex-for-col" id="shopping-list-flexbox">
             <header>
                 <h3>Shopping List</h3>
             </header>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus pariatur, eaque at enim nostrum voluptates labore sequi, animi asperiores aliquid accusamus tempore alias cum accusantium odio recusandae repellendus blanditiis. Ratione!</p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime reiciendis impedit fugiat, harum laboriosam non debitis ex inventore quod ipsum temporibus enim. Facilis, quasi ad. Magnam non eveniet voluptatem recusandae.</p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus dolorum sint dignissimos nobis debitis harum modi, in quas praesentium, corporis rerum tenetur aut voluptate cupiditate beatae commodi reiciendis nisi? Error!</p>
-            <iframe width="450" height="250" frameborder="0" style="border:0" referrerpolicy="no-referrer-when-downgrade"
-                src="https://www.google.com/maps/embed/v1/directions?key={{ key }}&origin={{ lat }},{{ long }}
-                &destination={{ lat }},{{ long }}&waypoints={{ ids }}&avoid=tolls|highways">
+            {% for store in stores %}
+            <div id="items-each-store">
+                <h4>{{ store.store }}, {{ store.location }}</h4>
+                {% if store.item_list != None %}
+                <ul>
+                    {% set items = store.item_list.split(',') %}
+                    {% for item in items %}
+                    <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="centered-list-child flex-for-col" id="map-flexbox">
+            <iframe width="100%" height="100%" frameborder="0" style="border:0" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/directions?key={{ key }}&origin={{ lat }},{{ long }}
+            &destination={{ lat }},{{ long }}&waypoints={{ ids }}&avoid=tolls|highways">
             </iframe>
         </div>
     </section>
