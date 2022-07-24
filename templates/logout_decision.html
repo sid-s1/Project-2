@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <section class="centered-list-display">
+        <div class="centered-list-child flex-for-col">
+            <header>
+                <h3>Are you sure you want to log out?</h3>
+            </header>
+            <form action="/logout" method="POST" class="flex-for-col">
+                <label for="log-out">
+                    <input type="submit" name="action" value="Yes please" class="centered-btn" id="form-btn">
+                </label>
+                <label for="go-back">
+                    <input type="submit" name="action" value="No, take me back!" class="centered-btn" id="form-btn">
+                </label>
+            </form>
+        </div>
+    </section>
+{% endblock %}

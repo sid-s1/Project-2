@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <section class="centered-list-display">
+        <div class="centered-list-child flex-for-col" id="signup-fields">
+            <header>
+                <h3>Log In</h3>
+            </header>
+            <form action="/login" method="POST" class="flex-for-col">
+                <label for="email">
+                    Email:
+                    <input type="text" required name="email" class="bordered-input-box">
+                </label>
+                <label for="password">
+                    Password:
+                    <input type="password" required name="entered_password" class="bordered-input-box">
+                </label>
+                <button class="centered-btn" id="form-btn">
+                    Submit
+                </button>
+            </form>
+        </div>
+    </section>
+    <script src="{{ url_for('static',filename='login.js') }}"></script>
+{% endblock %}

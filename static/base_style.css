@@ -68,14 +68,38 @@
     padding: 2%;
     margin: 5%;
 }
+#item-flexbox {
+    justify-content: start;
+}
+#items-each-store {
+    height: 100%;
+}
+#signup-fields {
+    text-align: start;
+}
 header {
     border-bottom: 2px solid black;
 }
 .bordered-input-box {
     border: 2px solid greenyellow;
-    width: 200%;
+    width: 100%;
 }
 #form-btn {
     margin: 15% auto;
     box-shadow: -2px -2px grey;
+}
+.add-item-btn {
+    margin: 15% auto;
+    padding: 3%;
+    background-color: greenyellow;
+    box-shadow: -2px -2px grey;
+}
+.add-item-btn:hover {
+    background-color: rgb(113, 169, 30);
+    cursor: pointer;
+}
+.add-item-btn:active {
+    background-color: black;
+    color: white;
+    box-shadow: 0px 0px;
 }

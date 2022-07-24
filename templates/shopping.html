@@ -21,6 +21,52 @@
             <header>
                 <h3>Add your items</h3>
             </header>
+            <!-- {% for store in stores %}
+                <p class="store-name">
+                    {{ store }} -
+                </p>
+            {% endfor %} -->
+            <!-- <select name="store-for-item-addition" id="selected-store">
+                <option value="" selected disabled>Please select a store</option>
+                {% for store in stores %}
+                    <option value="{{ store.id }}">{{ store.store }}, {{ store.location }}</option>
+                {% endfor %}
+            </select> -->
+            <!-- {% for store in stores %}
+                <div id="items-each-store">
+                    <h4>{{ store.store }}, {{ store.location }}</h4>
+                    <form action="/add_item" class="flex-for-col" method="POST">
+                        <input type="hidden" value="{{ store.id }}" name="store-id">
+                        <input type="text" class="bordered-input-box" name="added-item">
+                        <button class="add-item-btn">Add Item</button>
+                    </form>
+                    {% if items != None %}
+                        <ul>
+                            {% for item in items %}
+                                <li>{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %} -->
+            {% for store in stores %}
+                <div id="items-each-store">
+                    <h4>{{ store.store }}, {{ store.location }}</h4>
+                    <form action="/add_item" class="flex-for-col" method="POST">
+                        <input type="hidden" value="{{ store.id }}" name="store-id">
+                        <input type="text" class="bordered-input-box" name="added-item">
+                        <button class="add-item-btn">Add Item</button>
+                    </form>
+                    {% if store.item_list != None %}
+                        <ul>
+                            {% set items = store.item_list.split(',') %}
+                            {% for item in items %}
+                                <li>{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
         </div>
     </section>
     <script src="{{ url_for('static',filename='shopping.js') }}"></script>

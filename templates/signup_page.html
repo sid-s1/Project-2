@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <section class="centered-list-display">
+        <div class="centered-list-child flex-for-col" id="signup-fields">
+            <header>
+                <h3>Sign Up</h3>
+            </header>
+            <form action="/signup" method="POST" class="flex-for-col">
+                <label for="first_name">
+                    First Name:
+                    <input type="text" required name="first_name" class="bordered-input-box">
+                </label>
+                <label for="email">
+                    Email:
+                    <input type="text" required name="email" class="bordered-input-box">
+                </label>
+                <label for="password">
+                    Password:
+                    <input type="password" required name="entered_password" class="bordered-input-box">
+                </label>
+                <label for="retyped-password">
+                    Retype Password:
+                    <input type="password" required name="retyped_password" class="bordered-input-box">
+                </label>
+                <label for="home">
+                    Home Address:
+                    <input type="text" required name="home" class="bordered-input-box" id="home-address">
+                </label>
+                <button class="centered-btn" id="form-btn">
+                    Submit
+                </button>
+            </form>
+        </div>
+    </section>
+    <script src="{{ url_for('static',filename='signup.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ key }}&libraries=places&callback=initMap"></script>
+{% endblock %}

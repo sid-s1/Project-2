@@ -14,16 +14,26 @@
             <li>
                 <a href="{{ url_for('index') }}">Home</a>
             </li>
+            {% if user != None %}
             <li>
                 <a href="{{ url_for('shopping_list') }}">Create a shopping list</a>
             </li>
             <li>
                 <a href="{{ url_for('list_route_display') }}">Shopping List and Route</a>
             </li>
-            <li>Login
+            {% endif %}
+            {% if user == None %}
+            <li>
+                <a href="{{ url_for('login_page') }}">Login</a>
             </li>
-            <li>Logout</li>
-            <li>Signup</li>
+            <li>
+                <a href="{{ url_for('signup_page') }}">Signup</a>
+            </li>
+            {% else %}
+            <li>
+                <a href="{{ url_for('logout_decision') }}">Logout</a>
+            </li>
+            {% endif %}
         </ul>
     </nav>
     {% block body %}{% endblock %}
