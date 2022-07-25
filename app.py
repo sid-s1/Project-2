@@ -17,19 +17,10 @@ def index():
 
 @app.route('/list')
 def shopping_list():
-    items_by_store = []
+    email = session.get('email')
     if session.get('email') != None:
-        user_id = app_service.retrieve_userID(session.get('email'))
-        stores = app_service.retrieve_stores(user_id)
-        for store in stores:
-            items = app_service.retrieve_items(user_id,store['id'])
-            items_by_store.append({
-                'id':store['id'],
-                'store':store['store'],
-                'location':store['location'],
-                'item_list':items
-            })
-        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=items_by_store)
+        stores_and_items = app_service.retrieve_stores_items(email)
+        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items)
 
 # based on distance between origin and each destination/waypoint, create a sorted list of place_id's and use that to create a route then
 
@@ -44,38 +35,44 @@ def shopping_list_search():
     place_id = app_service.get_place_id(store_search_json)
     store_name = app_service.get_store_name(store_search_json)
 
-    app_service.store_place_details(place_id,store_name,user_id)
-
-    # cancel from here
-    # stores_dict = app_service.store_place_details(place_id,store_name)
-    # all_store_info_list = app_service.all_store_distances(stores_dict)
-    
-    # latitude = app_service.farthest_destination(all_store_info_list)[0]
-    # longitude = app_service.farthest_destination(all_store_info_list)[1]
-    # all_ids = app_service.waypoints(all_store_info_list)
-    return redirect('/list')
+    if app_service.check_store_exists(user_id,store_name) != 'exists':
+        app_service.store_place_details(place_id,store_name,user_id)
+        return redirect('/list')
+    else:
+        return render_template('item_exists.html',entity='store')
 
 
 @app.route('/display')
 def list_route_display():
-    items_by_store = []
-    # lat_long_farthest = app_service.farthest_destination()
-    # lat = lat_long_farthest[0]
-    # long = lat_long_farthest[1]
+    email = session.get('email')
     if session.get('email') != None:
-        all_ids = app_service.all_ids()
-        lat_long = app_service.retrieve_address(session.get('email'))
-        user_id = app_service.retrieve_userID(session.get('email'))
-        stores = app_service.retrieve_stores(user_id)
-        for store in stores:
-            items = app_service.retrieve_items(user_id,store['id'])
-            items_by_store.append({
-                'id':store['id'],
-                'store':store['store'],
-                'location':store['location'],
-                'item_list':items
-            })
-        return render_template('route.html',key=api_key,ids=all_ids,user=session.get('email'),lat=lat_long[0],long=lat_long[1],stores=items_by_store)
+        stores_and_items = app_service.retrieve_stores_items(email)
+        user_id = app_service.retrieve_userID(email)
+        lat_long = app_service.retrieve_address(email)
+        all_placeids_for_maps = app_service.all_placeids_for_maps()
+        return render_template('route.html',key=api_key,ids=all_placeids_for_maps,user=session.get('email'),lat=lat_long[0],long=lat_long[1],stores=stores_and_items,user_id=user_id)
+
+@app.route('/display',methods=["POST"])
+def list_route_action():
+    email = session.get('email')
+    if session.get('email') != None and request.form.get('delete_item_name') == None and request.form.get('delete_store') == None:
+        user_id = app_service.retrieve_userID(email)
+        store_id = request.form.get('store_id')
+        old_item_name = request.form.get('old_item_name')
+        new_item_name = request.form.get('new_item_name')
+        app_service.edit_item(user_id,store_id,old_item_name,new_item_name)
+        return redirect('/display')
+    elif session.get('email') != None and request.form.get('delete_item_name') != None:
+        user_id = app_service.retrieve_userID(email)
+        store_id = request.form.get('delete_item_store')
+        item_to_delete = request.form.get('delete_item_name')
+        app_service.delete_item(user_id,store_id,item_to_delete)
+        return redirect('/display')
+    elif session.get('email') != None and request.form.get('delete_store') != None:
+        user_id = app_service.retrieve_userID(email)
+        store_id = request.form.get('delete_store')
+        app_service.delete_store(user_id,store_id)
+        return redirect('/display')
 
 @app.route('/signup')
 def signup_page():
@@ -133,8 +130,10 @@ def add_item_action():
     store_id = request.form.get('selected-store')
     added_item = request.form.get('added-item')
     user_id = app_service.retrieve_userID(session.get('email'))
-    app_service.store_items(user_id,store_id,added_item)
-    return redirect('/list')
+    if app_service.store_items(user_id,store_id,added_item) != 'exists' and app_service.store_items(user_id,store_id,added_item) != None:
+        return redirect('/list')
+    else:
+        return render_template('item_exists.html',entity='item')
 
 if __name__ == '__main__':
     app.run(debug=True)

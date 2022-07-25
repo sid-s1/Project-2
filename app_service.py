@@ -19,26 +19,29 @@ def get_store_name(response):
     return response['predictions'][0]['structured_formatting']['main_text']
 
 def store_place_details(place_id,store_name,user_id):
-    url_for_details = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={api_key}"
-    response = requests.request("GET",url_for_details,headers=headers,data=payload)
-    latitude = response.json()['result']['geometry']['location']['lat']
-    longitude = response.json()['result']['geometry']['location']['lng']
-    destination = f"{latitude}%2C{longitude}"
-    for component in response.json()['result']['address_components']:
-        if 'locality' in component['types']:
-            location = component['short_name']
+    if check_store_exists(user_id,store_name) != 'exists':
+        url_for_details = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={api_key}"
+        response = requests.request("GET",url_for_details,headers=headers,data=payload)
+        latitude = response.json()['result']['geometry']['location']['lat']
+        longitude = response.json()['result']['geometry']['location']['lng']
+        destination = f"{latitude}%2C{longitude}"
+        for component in response.json()['result']['address_components']:
+            if 'locality' in component['types']:
+                location = component['short_name']
 
-    url_for_distance = f"https://maps.googleapis.com/maps/api/distancematrix/json?origins=-33.819450%2C151.004166&destinations={destination}&key={api_key}"
-    response_for_distance = requests.request("GET", url_for_distance, headers=headers, data=payload)
-    distance_from_origin = float(response_for_distance.json()['rows'][0]['elements'][0]['distance']['text'].split()[0])
+        url_for_distance = f"https://maps.googleapis.com/maps/api/distancematrix/json?origins=-33.819450%2C151.004166&destinations={destination}&key={api_key}"
+        response_for_distance = requests.request("GET", url_for_distance, headers=headers, data=payload)
+        distance_from_origin = float(response_for_distance.json()['rows'][0]['elements'][0]['distance']['text'].split()[0])
 
-    conn = psycopg2.connect(DATABASE_URL)
-    cur = conn.cursor()
-    cur.execute("""
-    INSERT INTO stores_1(store_name,location,place_id,latitude,longitude,distance_from_origin,user_id) VALUES(%s,%s,%s,%s,%s,%s,%s)
-    """,(store_name,location,place_id,latitude,longitude,distance_from_origin,user_id))
-    conn.commit()
-    cur.close()
+        conn = psycopg2.connect(DATABASE_URL)
+        cur = conn.cursor()
+        cur.execute("""
+        INSERT INTO stores_1(store_name,location,place_id,latitude,longitude,distance_from_origin,user_id) VALUES(%s,%s,%s,%s,%s,%s,%s)
+        """,(store_name,location,place_id,latitude,longitude,distance_from_origin,user_id))
+        conn.commit()
+        cur.close()
+    else:
+        return 'exists'
 
 # def all_store_distances(dict):
 #     dest = ""
@@ -99,7 +102,7 @@ def store_place_details(place_id,store_name,user_id):
 #     cur.close()
 #     return lat_long
 
-def all_ids():
+def all_placeids_for_maps():
     waypoints_string = ""
     ids = []
     conn = psycopg2.connect(DATABASE_URL)
@@ -109,6 +112,7 @@ def all_ids():
     """)
     results = cur.fetchall()
     cur.close()
+    # select lat,long as well and then for each, from line 119 make calculations as to which should be the next waypoint - use distance google api to get lowest distance one
     for row in results:
         ids.append(row[0])
     while ids:
@@ -196,6 +200,23 @@ def retrieve_stores(userID):
     cur.close()
     return stores
 
+def check_store_exists(user_id,store_to_add):
+    conn = psycopg2.connect(DATABASE_URL)
+    cur = conn.cursor()
+    cur.execute("""
+    SELECT * FROM stores_1 WHERE user_id=%s AND store_name=%s
+    """,(user_id,store_to_add))
+    if cur.rowcount != 0:
+        return 'exists'
+
+def check_item_exists(item_to_add,string):
+    items = string.split(',')
+    for item in items:
+        if item.lower() == item_to_add.lower():
+            return True
+    return False
+
+
 def store_items(user_id,store_id,item):
     conn = psycopg2.connect(DATABASE_URL)
     cur = conn.cursor()
@@ -208,11 +229,14 @@ def store_items(user_id,store_id,item):
         SELECT item_list FROM items WHERE user_id=%s AND store_id=%s
         """,(user_id,store_id))
         items = cur.fetchall()[0][0]
-        items = items + "," + item
-        cur.execute("""
-        UPDATE items SET item_list=%s WHERE id=%s
-        """,(items,items_table_id))
-        conn.commit()
+        if check_item_exists(item,items) == False:
+            items = items + "," + item
+            cur.execute("""
+            UPDATE items SET item_list=%s WHERE id=%s
+            """,(items,items_table_id))
+            conn.commit()
+        else:
+            return 'exists'
     else:
         cur.execute("""
         INSERT INTO items(user_id,store_id,item_list) VALUES(%s,%s,%s)
@@ -247,3 +271,60 @@ def retrieve_address(email):
     lat_long.append(lat)
     lat_long.append(long)
     return lat_long
+
+def retrieve_stores_items(email):
+    items_by_store = []
+    user_id = retrieve_userID(email)
+    stores = retrieve_stores(user_id)
+    for store in stores:
+        items = retrieve_items(user_id,store['id'])
+        items_by_store.append({
+            'id':store['id'],
+            'store':store['store'],
+            'location':store['location'],
+            'item_list':items
+        })
+    return items_by_store
+
+def edit_item(user_id,store_id,old_item_name,new_item_name):
+    conn = psycopg2.connect(DATABASE_URL)
+    cur = conn.cursor()
+    current_items_string = retrieve_items(user_id,store_id)
+    current_items_array = current_items_string.split(',')
+    for index in range(len(current_items_array)):
+        if current_items_array[index].lower() == old_item_name.lower():
+            current_items_array[index] = new_item_name
+    new_items_string = (',').join(current_items_array)
+    cur.execute("""
+    UPDATE items SET item_list=%s WHERE user_id=%s AND store_id=%s
+    """,(new_items_string,user_id,store_id))
+    conn.commit()
+    cur.close()
+
+def delete_item(user_id,store_id,item_to_delete):
+    conn = psycopg2.connect(DATABASE_URL)
+    cur = conn.cursor()
+    current_items_string = retrieve_items(user_id,store_id)
+    current_items_array = current_items_string.split(',')
+    for item in current_items_array:
+        if item.lower() == item_to_delete.lower():
+            current_items_array.pop(current_items_array.index(item))
+    new_items_string = (',').join(current_items_array)
+    cur.execute("""
+    UPDATE items SET item_list=%s WHERE user_id=%s AND store_id=%s
+    """,(new_items_string,user_id,store_id))
+    conn.commit()
+    cur.close()
+
+def delete_store(user_id,store_id):
+    conn = psycopg2.connect(DATABASE_URL)
+    cur = conn.cursor()
+    cur.execute("""
+    DELETE FROM items WHERE user_id=%s AND store_id=%s
+    """,(user_id,store_id))
+    conn.commit()
+    cur.execute("""
+    DELETE FROM stores_1 WHERE user_id=%s AND id=%s
+    """,(user_id,store_id))
+    conn.commit()
+    cur.close()

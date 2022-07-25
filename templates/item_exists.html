@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                {% if entity == 'item' %}
+                    <div class="modal-header">
+                        <h5 class="modal-title">Item already exists</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('shopping_list_search') }}" class="btn btn-secondary">Go back to add another item</a>
+                        <a href="{{ url_for('list_route_display') }}" class="btn btn-secondary">Go to edit item</a>
+                    </div>
+                {% elif entity == 'store' %}
+                    <div class="modal-header">
+                        <h5 class="modal-title">Store already exists</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ url_for('shopping_list_search') }}" class="btn btn-secondary">Go back to add another store</a>
+                        <a href="{{ url_for('list_route_display') }}" class="btn btn-secondary">Go to delete store</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script>
+        $("#exampleModal").modal()
+    </script>
+{% endblock %}
