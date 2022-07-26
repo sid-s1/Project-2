@@ -4,10 +4,11 @@ const itemName = document.querySelector('#item-name');
 const oldItemName = document.querySelector('#old-item-name');
 const storeId = document.querySelector('#store-id');
 const cancelEdit = document.querySelector('#cancel-edit');
+const modal = document.querySelector('.modal');
 
 for (const editBtn of editBtns) {
     editBtn.addEventListener('click', function () {
-        $("#editModal").modal();
+        // $("#editModal").modal();
         const itemAndIds = editBtn.previousElementSibling.value;
         const itemAndIdsArr = itemAndIds.split(',');
         itemName.value = itemAndIdsArr[0];

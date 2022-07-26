@@ -49,7 +49,8 @@ def list_route_display():
         stores_and_items = app_service.retrieve_stores_items(email)
         user_id = app_service.retrieve_userID(email)
         lat_long = app_service.retrieve_address(email)
-        all_placeids_for_maps = app_service.all_placeids_for_maps()
+        all_placeids_for_maps = app_service.all_placeids_for_maps(user_id)
+        print(all_placeids_for_maps)
         return render_template('route.html',key=api_key,ids=all_placeids_for_maps,user=session.get('email'),lat=lat_long[0],long=lat_long[1],stores=stores_and_items,user_id=user_id)
 
 @app.route('/display',methods=["POST"])
@@ -115,6 +116,10 @@ def login_check():
             return render_template('login_page.html',unmatched=True)
     else:
         return render_template('login_page.html',no_email=True)
+
+@app.route('/edit_item')
+def trial():
+    return render_template('trial.html')
 
 @app.route('/logout_check')
 def logout_decision():

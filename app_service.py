@@ -102,14 +102,14 @@ def store_place_details(place_id,store_name,user_id):
 #     cur.close()
 #     return lat_long
 
-def all_placeids_for_maps():
+def all_placeids_for_maps(user_id):
     waypoints_string = ""
     ids = []
     conn = psycopg2.connect(DATABASE_URL)
     cur = conn.cursor()
     cur.execute("""
-    SELECT place_id FROM stores_1 ORDER BY distance_from_origin DESC
-    """)
+    SELECT place_id FROM stores_1 WHERE user_id=%s ORDER BY distance_from_origin DESC
+    """,(user_id,))
     results = cur.fetchall()
     cur.close()
     # select lat,long as well and then for each, from line 119 make calculations as to which should be the next waypoint - use distance google api to get lowest distance one
