@@ -8,7 +8,8 @@ const modal = document.querySelector('.modal');
 
 for (const editBtn of editBtns) {
     editBtn.addEventListener('click', function () {
-        // $("#editModal").modal();
+        modal.style.visibility = "visible";
+        modal.classList.toggle('show-modal');
         const itemAndIds = editBtn.previousElementSibling.value;
         const itemAndIdsArr = itemAndIds.split(',');
         itemName.value = itemAndIdsArr[0];
@@ -18,11 +19,5 @@ for (const editBtn of editBtns) {
 }
 
 cancelEdit.addEventListener('click', function () {
-    $("#editModal").modal('hide');
+    modal.classList.toggle('show-modal');
 });
-
-// for (const deleteBtn of deleteBtns) {
-//     deleteBtn.addEventListener('click',function (){
-
-//     });
-// }

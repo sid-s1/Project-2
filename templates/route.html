@@ -1,50 +1,6 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    {% block trial %} {% endblock %}
-    <!-- <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
-                </div>
-                <div class="modal-body">
-                    <form action="/display" method="POST">
-                        <div class="form-group">
-                            <label for="item-name" class="col-form-label">Item Name:</label>
-                            <input type="hidden" class="form-control" id="store-id" name="store_id">
-                            <input type="text" class="form-control" id="item-name" name="new_item_name">
-                            <input type="hidden" class="form-control" id="old-item-name" name="old_item_name">
-                            <button class="btn btn-secondary">Confirm Edit</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" id="cancel-edit">Cancel Edit</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- <div class="modal">
-        <div class="modal-box">
-            <div class="modal-content">
-                <h1>Edit Item</h1>
-                <form action="/display" method="POST">
-                    <div class="form-group">
-                        <label for="item-name" class="col-form-label">Item Name:</label>
-                        <input type="hidden" class="form-control" id="store-id" name="store_id">
-                        <input type="text" class="form-control" id="item-name" name="new_item_name">
-                        <input type="hidden" class="form-control" id="old-item-name" name="old_item_name">
-                        <button class="btn btn-secondary">Confirm Edit</button>
-                    </div>
-                </form>
-                <div class="modal-footer">
-                    <button class="turn-anchor-btn" id="cancel-edit">Cancel Edit</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
     <section class="centered-list-display">
         <div class="flex-for-col" id="shopping-list-flexbox">
             <header>
@@ -90,5 +46,24 @@
             </div>
         {% endif %}
     </section>
+    <div class="modal" id="edit-item-modal">
+        <div class="modal-box">
+            <div class="modal-content">
+                <h1>Edit Item</h1>
+                <form action="/display" method="POST">
+                    <div class="form-group">
+                        <label for="item-name" class="col-form-label">Item Name:</label>
+                        <input type="hidden" class="form-control" id="store-id" name="store_id">
+                        <input type="text" class="form-control" id="item-name" name="new_item_name">
+                        <input type="hidden" class="form-control" id="old-item-name" name="old_item_name">
+                        <button class="btn btn-secondary">Confirm Edit</button>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button class="turn-anchor-btn" id="cancel-edit">Cancel Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="{{ url_for('static',filename='edit_item.js') }}"></script>
 {% endblock %}
