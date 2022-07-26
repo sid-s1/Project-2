@@ -11,6 +11,11 @@
     display: flex;
     justify-content: center;
 }
+.disabled-btn {
+    margin: 5% auto;
+    padding: 3%;
+    background-color: grey;
+}
 .centered-btn {
     margin: 5% auto;
     padding: 3%;
@@ -116,4 +121,16 @@ header {
     background-color: black;
     color: white;
     box-shadow: 0px 0px;
+}
+.pointers-pw {
+    list-style: none;
+}
+.pointers-pw li:before {
+    content: '✓';
+}
+.error-pw {
+    list-style: none;
+}
+.error-pw li:before {
+    content: 'x';
 }

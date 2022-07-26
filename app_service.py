@@ -140,13 +140,22 @@ def check_password(password,hashed_password):
     return bcrypt.checkpw(password.encode(),hashed_password.encode())
 
 def create_user_on_db(first_name,email,password,lat,long):
-    conn = psycopg2.connect(DATABASE_URL)
-    cur = conn.cursor()
-    cur.execute("""
-    INSERT INTO users(first_name,email,password,latitude,longitude) VALUES(%s,%s,%s,%s,%s)
-    """,(first_name,email,password,lat,long))
-    conn.commit()
-    cur.close()
+    if check_email_db(email):
+        return 'exists'
+    else:
+        conn = psycopg2.connect(DATABASE_URL)
+        cur = conn.cursor()
+        cur.execute("""
+        INSERT INTO users(first_name,email,password,latitude,longitude) VALUES(%s,%s,%s,%s,%s)
+        """,(first_name,email,password,lat,long))
+        conn.commit()
+        cur.close()
+
+def is_valid_email(email):
+    if email.rfind('.') + 1 < len(email) and email[email.rfind('.') + 1] != '.' and email.count('@') == 1 and email.find('@') - 1 >= 0 and email[email.find('@') - 1] != '.' and email.find('.', email.find('@'), len(email) - 1) >= email.find('@') + 2:
+        return True
+    else:
+        return False
 
 def check_email_db(email):
     conn = psycopg2.connect(DATABASE_URL)

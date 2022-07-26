@@ -39,7 +39,7 @@ def shopping_list_search():
         app_service.store_place_details(place_id,store_name,user_id)
         return redirect('/list')
     else:
-        return render_template('item_exists.html',entity='store')
+        return render_template('entity_exists.html',entity='store')
 
 
 @app.route('/display')
@@ -85,13 +85,18 @@ def signup_process():
     email = request.form.get('email')
     password = request.form.get('entered_password')
     address = request.form.get('home')
-
-    hashed_password = app_service.hash(password)
-    geocoded_address = app_service.geocode_address(address)
-    home_latitude = geocoded_address[0]
-    home_longitude = geocoded_address[1]
-    app_service.create_user_on_db(first_name,email,hashed_password,home_latitude,home_longitude)
-    return redirect('/')
+    if app_service.is_valid_email(email):
+        if app_service.check_email_db(email) == False:
+            hashed_password = app_service.hash(password)
+            geocoded_address = app_service.geocode_address(address)
+            home_latitude = geocoded_address[0]
+            home_longitude = geocoded_address[1]
+            app_service.create_user_on_db(first_name,email,hashed_password,home_latitude,home_longitude)
+            return redirect('/login')
+        else:
+            return render_template('entity_exists.html',entity='email')
+    else:
+        return render_template('signup_page.html',key=api_key,user=session.get('email'),invalid_email=True)
 
 @app.route('/login')
 def login_page():
@@ -133,7 +138,7 @@ def add_item_action():
     if app_service.store_items(user_id,store_id,added_item) != 'exists' and app_service.store_items(user_id,store_id,added_item) != None:
         return redirect('/list')
     else:
-        return render_template('item_exists.html',entity='item')
+        return render_template('entity_exists.html',entity='item')
 
 if __name__ == '__main__':
     app.run(debug=True)

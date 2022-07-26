@@ -13,15 +13,15 @@
                 </label>
                 <label for="email">
                     Email:
-                    <input type="text" required name="email" class="bordered-input-box">
+                    <input type="text" required name="email" class="bordered-input-box" id="signup-email">
                 </label>
                 <label for="password">
                     Password:
-                    <input type="password" required name="entered_password" class="bordered-input-box">
+                    <input type="password" required name="entered_password" class="bordered-input-box" id="pw">
                 </label>
                 <label for="retyped-password">
                     Retype Password:
-                    <input type="password" required name="retyped_password" class="bordered-input-box">
+                    <input type="password" required name="retyped_password" class="bordered-input-box" id="repw">
                 </label>
                 <label for="home">
                     Home Address:
@@ -31,6 +31,29 @@
                     Submit
                 </button>
             </form>
+            <div class="guidelines-for-signup">
+                <h4>Please ensure your password follows the below guidelines!</h4>
+                <ul class="pointers-pw">
+                    <li>Atleast one lowercase character</li>
+                    <li>Atleast one uppercase character</li>
+                    <li>Atleast one number</li>
+                    <li>Atleast one special character</li>
+                    <li>Atleast eight characters</li>
+                </ul>
+            </div>
+            {% if invalid_email == True %}
+            <div class="guidelines-for-signup">
+                <h4>Please follow these rules for your email and try again!</h4>
+                <ul>
+                    <li>It has exactly one '@' symbol</li>
+                    <li>It has at least one '.'</li>
+                    <li>There is at least one . following the '@' symbol</li>
+                    <li>There is at least one character before the '@'</li>
+                    <li>There is at least one character between the '@' and '.'</li>
+                    <li>There is at least one character after the final '.'</li>
+                </ul>
+            </div>
+            {% endif %}
         </div>
     </section>
     <script src="{{ url_for('static',filename='signup.js') }}"></script>
