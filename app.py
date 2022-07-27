@@ -50,8 +50,7 @@ def list_route_display():
         user_id = app_service.retrieve_userID(email)
         lat_long = app_service.retrieve_address(email)
         all_placeids_for_maps = app_service.all_placeids_for_maps(user_id)
-        print(all_placeids_for_maps)
-        return render_template('route.html',key=api_key,ids=all_placeids_for_maps,user=session.get('email'),lat=lat_long[0],long=lat_long[1],stores=stores_and_items,user_id=user_id)
+        return render_template('homepage.html',key=api_key,ids=all_placeids_for_maps,user=session.get('email'),lat=lat_long[0],long=lat_long[1],stores=stores_and_items,user_id=user_id)
 
 @app.route('/display',methods=["POST"])
 def list_route_action():

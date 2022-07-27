@@ -67,3 +67,37 @@
     </div>
     <script src="{{ url_for('static',filename='edit_item.js') }}"></script>
 {% endblock %}
+<section class="">
+    <header>
+        <h3>Shopping List</h3>
+    </header>
+    <div class="shop-flex" id="">
+        {% for store in stores %}
+        {% if store.item_list != None %}
+        <div id="items-each-store">
+            <h4>{{ store.store }}, {{ store.location }}</h4>
+            <form action="/display" METHOD="POST">
+                <input type="hidden" name="delete_store" value="{{ store.id }}">
+                <button class="btn btn-outline-success delete-store-btn">Delete Store</button>
+            </form>
+            <ul>
+                {% set items = store.item_list.split(',') %}
+                {% for item in items %}
+                {% if item|length > 0 %}
+                <li>{{ item }}
+                    <input type="hidden" value="{{ item }},{{ store.id }}">
+                    <button class="btn btn-outline-success edit-item-btn">Edit Item</button>
+                    <form action="/display" METHOD="POST">
+                        <input type="hidden" name="delete_item_name" value="{{ item }}">
+                        <input type="hidden" name="delete_item_store" value="{{ store.id }}">
+                        <button class="btn btn-outline-success delete-item-btn">Delete Item</button>
+                    </form>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</section>

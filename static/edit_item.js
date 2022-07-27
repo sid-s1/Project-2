@@ -8,7 +8,6 @@ const modal = document.querySelector('.modal');
 
 for (const editBtn of editBtns) {
     editBtn.addEventListener('click', function () {
-        modal.style.visibility = "visible";
         modal.classList.toggle('show-modal');
         const itemAndIds = editBtn.previousElementSibling.value;
         const itemAndIdsArr = itemAndIds.split(',');

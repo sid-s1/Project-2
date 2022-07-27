@@ -9,7 +9,12 @@ const checkLcLi = document.querySelector('#lc');
 const checkDigLi = document.querySelector('#dig');
 const checkSpecLi = document.querySelector('#spec');
 const checkLenLi = document.querySelector('#eight');
+const allPwLis = document.querySelectorAll('.pointers-pw li');
 changeSubmitBtn(signupBtn, false);
+
+for (const pwLi of allPwLis) {
+    pwLi.classList.add('list-items');
+}
 
 function initMap() {
     autoComplete = new google.maps.places.Autocomplete(searchField, {

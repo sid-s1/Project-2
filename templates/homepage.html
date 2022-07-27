@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <section class="">
+        <header>
+            <h3>Shopping List</h3>
+        </header>
+        <div class="shop-flex" id="">
+            {% for store in stores %}
+                {% if store.item_list != None %}
+                <div class="items-each-store">
+                    <header class="store-header">
+                        <h4>{{ store.store }}, {{ store.location }}</h4>
+                    </header>
+                    <ul>
+                        {% set items = store.item_list.split(',') %}
+                        {% for item in items %}
+                        {% if item|length > 0 %}
+                            <li>{{ item }}
+                                <input type="hidden" value="{{ item }},{{ store.id }}">
+                                <button class="edit-item-btn">Edit Item</button>
+                                <form action="/display" METHOD="POST">
+                                    <input type="hidden" name="delete_item_name" value="{{ item }}">
+                                    <input type="hidden" name="delete_item_store" value="{{ store.id }}">
+                                    <button class="delete-item-btn">Delete Item</button>
+                                </form>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    <div class="store-footer">
+                        <form action="/display" METHOD="POST">
+                            <input type="hidden" name="delete_store" value="{{ store.id }}">
+                            <button class="delete-store-btn">Delete Store</button>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+    <div class="modal">
+        <div class="modal-box">
+            <div class="modal-content">
+                <h1>Edit Item</h1>
+                <form action="/display" method="POST">
+                    <div class="form-group">
+                        <label for="item-name" class="col-form-label">Item Name:</label>
+                        <input type="hidden" class="form-control" id="store-id" name="store_id">
+                        <input type="text" class="form-control" id="item-name" name="new_item_name">
+                        <input type="hidden" class="form-control" id="old-item-name" name="old_item_name">
+                        <button>Confirm Edit</button>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button class="turn-anchor-btn" id="cancel-edit">Cancel Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static',filename='edit_item.js') }}"></script>
+{% endblock %}

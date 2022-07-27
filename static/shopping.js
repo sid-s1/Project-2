@@ -33,6 +33,9 @@ if (storeSelect.value === 'default') {
     addItem.disabled = true;
 }
 
+addedItemField.addEventListener('focus', changeWidthFocus);
+addedItemField.addEventListener('blur', changeWidthBlur);
+
 storeSelect.addEventListener('change', function () {
     checkAddedItemFieldForCommas();
     addedItemField.addEventListener('input', function () {
@@ -40,10 +43,18 @@ storeSelect.addEventListener('change', function () {
     });
 });
 
-searchField.addEventListener('focus', function () {
-    searchField.style.width = (searchField.value.length + 1) * 8 + "px";
-    searchField.style.minWidth = "300px";
-});
+function changeWidthFocus(event) {
+    event.target.style.width = (event.target.value.length + 1) * 8 + "px";
+    event.target.style.minWidth = "300px";
+}
+
+function changeWidthBlur(event) {
+    event.target.style.minWidth = "225px";
+    event.target.style.width = (event.target.value.length + 1) * 8 + "px";
+}
+
+searchField.addEventListener('focus', changeWidthFocus);
+searchField.addEventListener('blur', changeWidthBlur);
 
 searchField.addEventListener('blur', function () {
     searchField.style.minWidth = "225px";
