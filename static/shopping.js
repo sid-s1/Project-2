@@ -1,4 +1,3 @@
-const storeSearch = document.querySelector('#store-search');
 const storeFlexBox = document.querySelector('#store-flexbox');
 const itemFlexBox = document.querySelector('#item-flexbox');
 const searchForm = document.querySelector('search-form');
@@ -7,25 +6,39 @@ const searchButton = document.querySelector('#search-button');
 const addItem = document.querySelector('#add-item-btn');
 const storeSelect = document.querySelector('#store-select-dropdown');
 const addedItemField = document.querySelector('#added-item');
+const formBtn = document.querySelector('#form-btn');
 let autoComplete;
+formBtn.disabled = true;
+
+function formBtnEnable(event) {
+    if (searchField.value) {
+        formBtn.disabled = false;
+    }
+    else {
+        formBtn.disabled = true;
+    }
+}
+
+[addedItemField, searchField].forEach((element) => {
+    element.addEventListener('input', formBtnEnable);
+    element.addEventListener('focus', formBtnEnable);
+    element.addEventListener('blur', formBtnEnable);
+});
 
 function checkAddedItemFieldForCommas() {
     if (!addedItemField.value.includes(',')) {
         if (addedItemField.value.length > 0) {
             addItem.disabled = false;
-            addedItemField.classList.remove('error-bordered-input-box');
-            addedItemField.classList.add('bordered-input-box');
+            addedItemField.removeAttribute('id');
         }
         else {
             addItem.disabled = true;
-            addedItemField.classList.remove('bordered-input-box');
-            addedItemField.classList.add('error-bordered-input-box');
+            addedItemField.id = 'error-bordered-input-box';
         }
     }
     else {
         addItem.disabled = true;
-        addedItemField.classList.remove('bordered-input-box');
-        addedItemField.classList.add('error-bordered-input-box');
+        addedItemField.id = 'error-bordered-input-box';
     }
 }
 

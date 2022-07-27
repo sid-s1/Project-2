@@ -77,7 +77,7 @@ def list_route_action():
 @app.route('/signup')
 def signup_page():
     if session.get('email') == None:
-        return render_template('signup_page.html',key=api_key,user=session.get('email'))
+        return render_template('signup_page.html',key=api_key,user=session.get('email'),invalid_email=False)
 
 @app.route('/signup',methods=["POST"])
 def signup_process():

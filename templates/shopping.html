@@ -8,22 +8,24 @@
             </header>
             <form action="/list" class="flex-for-col" id="search-form" method="POST">
                 <input type="text" class="bordered-input-box" id="search-store-field" name="searched-store">
-                <button class="centered-btn" id="form-btn">Add Store</button>
+                <button id="form-btn">Add Store</button>
             </form>
         </div>
         <div class="flex-sidebyside flex-for-col" id="item-flexbox">
             <header>
                 <h3>Add your items</h3>
             </header>
-            <form action="/add_item" method="POST">
+            <form action="/add_item" method="POST" class="flex-for-col">
                 <select name="selected-store" id="store-select-dropdown">
                     <option value="default" selected disabled>Please select a store</option>
                     {% for store in stores %}
                         <option value="{{ store.id }}">{{ store.store }}, {{ store.location }}</option>
                     {% endfor %}
                 </select>
-                <input type="text" name="added-item" class="bordered-input-box" id="added-item">
-                <button id="add-item-btn">Add Item</button>
+                <div class="col-flex-btn-stack col-flex-btn-centered">
+                    <input type="text" name="added-item" class="bordered-input-box" id="added-item" placeholder="Enter an item">
+                    <button id="add-item-btn">Add Item</button>
+                </div>
             </form>
         </div>
     </section>

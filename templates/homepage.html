@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <section class="">
+    <section class="homepage">
         <header>
             <h3>Shopping List</h3>
         </header>
@@ -12,19 +12,24 @@
                     <header class="store-header">
                         <h4>{{ store.store }}, {{ store.location }}</h4>
                     </header>
-                    <ul>
+                    <ul class="col-flex-btn-stack">
                         {% set items = store.item_list.split(',') %}
                         {% for item in items %}
-                        {% if item|length > 0 %}
-                            <li>{{ item }}
-                                <input type="hidden" value="{{ item }},{{ store.id }}">
-                                <button class="edit-item-btn">Edit Item</button>
-                                <form action="/display" METHOD="POST">
-                                    <input type="hidden" name="delete_item_name" value="{{ item }}">
-                                    <input type="hidden" name="delete_item_store" value="{{ store.id }}">
-                                    <button class="delete-item-btn">Delete Item</button>
-                                </form>
-                            </li>
+                            {% if item|length > 0 %}
+                                <li class="item-list">
+                                    <div>
+                                        <p class="item-names">{{ item }}</p>
+                                    </div>
+                                    <div class="modify-item-btns">
+                                        <input type="hidden" value="{{ item }},{{ store.id }}">
+                                        <button class="edit-item-btn">Edit Item</button>
+                                        <form action="/display" METHOD="POST">
+                                            <input type="hidden" name="delete_item_name" value="{{ item }}">
+                                            <input type="hidden" name="delete_item_store" value="{{ store.id }}">
+                                            <button class="delete-item-btn">Delete Item</button>
+                                        </form>
+                                    </div>
+                                </li>
                             {% endif %}
                         {% endfor %}
                     </ul>
@@ -45,16 +50,15 @@
                 <h1>Edit Item</h1>
                 <form action="/display" method="POST">
                     <div class="form-group">
-                        <label for="item-name" class="col-form-label">Item Name:</label>
-                        <input type="hidden" class="form-control" id="store-id" name="store_id">
-                        <input type="text" class="form-control" id="item-name" name="new_item_name">
-                        <input type="hidden" class="form-control" id="old-item-name" name="old_item_name">
-                        <button>Confirm Edit</button>
-                    </div>
+                        <label for="item-name" class="modal-form-label">Item Name:</label>
+                        <input type="hidden" id="store-id" name="store_id">
+                        <input type="text" class="bordered-input-box" id="item-name" name="new_item_name">
+                        <input type="hidden" id="old-item-name" name="old_item_name">
+                    <div class="rand-flex">
+                        <button id="confirm-edit">Confirm Edit</button>
                 </form>
-                <div class="modal-footer">
-                    <button class="turn-anchor-btn" id="cancel-edit">Cancel Edit</button>
-                </div>
+                    <button id="cancel-edit">Cancel Edit</button>
+                    </div>
             </div>
         </div>
     </div>
