@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block body %}
+    {% if ids %}
     <section class="homepage">
         <header>
             <h3>Shopping List</h3>
@@ -23,7 +24,7 @@
                                     <div class="modify-item-btns">
                                         <input type="hidden" value="{{ item }},{{ store.id }}">
                                         <button class="edit-item-btn">Edit Item</button>
-                                        <form action="/display" METHOD="POST">
+                                        <form action="/" METHOD="POST">
                                             <input type="hidden" name="delete_item_name" value="{{ item }}">
                                             <input type="hidden" name="delete_item_store" value="{{ store.id }}">
                                             <button class="delete-item-btn">Delete Item</button>
@@ -44,6 +45,24 @@
             {% endfor %}
         </div>
     </section>
+    {% else %}
+    <header>
+        {% if user != None %}
+            <h3>Create your own shopping list and set a route!</h3>
+        {% else %}
+            <h3>Create your own shopping list and set a route! Signup today!</h3>
+        {% endif %}
+    </header>
+    <div class="guide">
+    <div class="sample">
+        <video controls width="750">
+            <source src="{{ url_for('static',filename='video/process-flow.mp4') }}" type="video/mp4">
+            Your browser does not support HTML5 video!
+        </video>
+        <img src="{{ url_for('static',filename='images/route.png') }}" class="route-img" alt="">
+    </div>
+    </div>
+    {% endif %}
     <div class="modal">
         <div class="modal-box">
             <div class="modal-content">
