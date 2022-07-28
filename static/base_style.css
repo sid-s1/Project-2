@@ -90,6 +90,7 @@ body {
     padding: 0;
     overflow: hidden;
     margin: 2%;
+    font-size: 2em;
 }
 #signup-fields {
     text-align: start;
