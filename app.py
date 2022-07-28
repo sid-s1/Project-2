@@ -116,9 +116,9 @@ def login_check():
             session['email'] = email
             return redirect('/')
         else:
-            return render_template('login_page.html',unmatched=True)
+            return render_template('login_page.html',unmatched=True,user=session.get('email'))
     else:
-        return render_template('login_page.html',no_email=True)
+        return render_template('login_page.html',no_email=True,user=session.get('email'))
 
 @app.route('/edit_item')
 def trial():

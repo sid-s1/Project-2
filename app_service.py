@@ -166,11 +166,11 @@ def check_email_db(email):
     SELECT COUNT(*) FROM users WHERE email = %s
     """,(email,))
     matched_users = cur.fetchall()[0][0]
+    cur.close()
     if matched_users == 1:
         return True
     else:
         return False
-    cur.close()
 
 def check_login_details(email,password):
     conn = psycopg2.connect(DATABASE_URL)
