@@ -10,6 +10,10 @@ const checkDigLi = document.querySelector('#dig');
 const checkSpecLi = document.querySelector('#spec');
 const checkLenLi = document.querySelector('#eight');
 const allPwLis = document.querySelectorAll('.pointers-pw li');
+const guidelines = document.querySelector('.pointers-pw');
+const warning = document.querySelector('#guidelines-notif');
+let warningChanged = false;
+
 changeSubmitBtn(signupBtn, false);
 
 for (const pwLi of allPwLis) {
@@ -37,6 +41,15 @@ function onPlaceChanged() {
     }
 }
 
+function changeSubmitBtn(btn, bool) {
+    if (!bool) {
+        signupBtn.disabled = true;
+    }
+    else {
+        signupBtn.disabled = false;
+    }
+}
+
 function warningInputBoxes() {
     password.style.border = "2px solid red";
     retypedPassword.style.border = "2px solid red";
@@ -48,45 +61,26 @@ function resetInputBoxes() {
 }
 
 function createWarningMessage() {
-    const warning = document.createElement('p');
-    warning.textContent = "Both passwords must match!";
-    warning.id = 'warning';
-    signupFields.appendChild(warning);
+    warning.textContent = "Please ensure your password follows the below guidelines, and that both passwords match!";
+    warningChanged = true;
 }
 
-password.addEventListener('input', function () {
+function validityChecks() {
     passwordValidityChecker();
-    const warningNotif = document.querySelector('#warning');
     if (password.value !== retypedPassword.value) {
         changeSubmitBtn(signupBtn, false);
         warningInputBoxes();
-        if (!warningNotif) {
+        if (!warningChanged) {
             createWarningMessage();
         }
     }
     else {
         passwordValidityChecker();
         resetInputBoxes();
-        warning.remove();
+        warning.textContent = "Please ensure your password follows the below guidelines!";
+        warningChanged = false;
     }
-});
-
-retypedPassword.addEventListener('input', function () {
-    passwordValidityChecker();
-    const warningNotif = document.querySelector('#warning');
-    if (password.value !== retypedPassword.value) {
-        changeSubmitBtn(signupBtn, false);
-        warningInputBoxes();
-        if (!warningNotif) {
-            createWarningMessage();
-        }
-    }
-    else {
-        passwordValidityChecker();
-        resetInputBoxes();
-        warning.remove();
-    }
-});
+}
 
 function passwordValidityChecker() {
     changeSubmitBtn(signupBtn, true);
@@ -124,20 +118,6 @@ function passwordValidityChecker() {
     }
     else {
         checkLenLi.classList.remove('list-items');
-    }
-}
-
-
-function changeSubmitBtn(btn, bool) {
-    if (!bool) {
-        signupBtn.disabled = true;
-        signupBtn.classList.remove('centered-btn');
-        signupBtn.classList.add('disabled-btn');
-    }
-    else {
-        signupBtn.disabled = false;
-        signupBtn.classList.remove('disabled-btn');
-        signupBtn.classList.add('centered-btn');
     }
 }
 
@@ -185,3 +165,7 @@ function checkLen(password) {
         return false
     }
 }
+
+[password, retypedPassword].forEach((element) => {
+    element.addEventListener('input', validityChecks);
+});

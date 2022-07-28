@@ -2,60 +2,76 @@
 
 {% block body %}
     <section class="centered-list-display">
-        <div class="centered-list-child flex-for-col" id="signup-fields">
+        <div class="centered-list-child signup-flex" id="signup-fields">
             <header>
                 <h3>Sign Up</h3>
             </header>
-            <form action="/signup" method="POST" class="flex-for-col">
-                <label for="first_name">
-                    First Name:
+            <form action="/signup" method="POST" class="signup-flex" id="flex-signup">
+                <label for="first_name" class="label-flex">
+                    <p>First Name:</p>
                     <input type="text" required name="first_name" class="bordered-input-box">
                 </label>
-                <label for="email">
-                    Email:
+                <label for="email" class="label-flex">
+                    <p>Email:</p>
                     <input type="text" required name="email" class="bordered-input-box" id="signup-email">
                 </label>
-                <label for="password">
-                    Password:
+                <label for="password" class="label-flex">
+                    <p>Password:</p>
                     <input type="password" required name="entered_password" class="bordered-input-box" id="pw">
                 </label>
-                <label for="retyped-password">
-                    Retype Password:
+                <div class="centering-container">
+                    <h4 id="guidelines-notif">Please ensure your password follows the below guidelines!</h4>
+                </div>
+                <div class="guidelines-for-signup">
+                    <ul class="pointers-pw">
+                        <li id="lc"> Atleast one lowercase character</li>
+                        <li id="uc"> Atleast one uppercase character</li>
+                        <li id="dig"> Atleast one number</li>
+                        <li id="spec"> Atleast one special character</li>
+                        <li id="eight"> Atleast eight characters</li>
+                    </ul>
+                </div>
+                <label for="retyped-password" class="label-flex">
+                    <p>Retype Password:</p>
                     <input type="password" required name="retyped_password" class="bordered-input-box" id="repw">
                 </label>
-                <label for="home">
-                    Home Address:
+                <label for="home" class="label-flex">
+                    <p>Home Address</p>
                     <input type="text" required name="home" class="bordered-input-box" id="home-address">
                 </label>
-                <button class="centered-btn" id="form-btn">
-                    Submit
-                </button>
+                <div class="centering-container">
+                    <button id="form-btn">
+                        Submit
+                    </button>
+                </div>
             </form>
-            <div class="guidelines-for-signup">
-                <h4>Please ensure your password follows the below guidelines!</h4>
-                <ul class="pointers-pw">
-                    <li id="lc">Atleast one lowercase character</li>
-                    <li id="uc">Atleast one uppercase character</li>
-                    <li id="dig">Atleast one number</li>
-                    <li id="spec">Atleast one special character</li>
-                    <li id="eight">Atleast eight characters</li>
-                </ul>
-            </div>
-            {% if invalid_email == True %}
-            <div class="guidelines-for-signup">
-                <h4>Please follow these rules for your email and try again!</h4>
-                <ul>
-                    <li>It has exactly one '@' symbol</li>
-                    <li>It has at least one '.'</li>
-                    <li>There is at least one . following the '@' symbol</li>
-                    <li>There is at least one character before the '@'</li>
-                    <li>There is at least one character between the '@' and '.'</li>
-                    <li>There is at least one character after the final '.'</li>
-                </ul>
-            </div>
-            {% endif %}
         </div>
     </section>
+    {% if invalid_email == True %}
+    <div class="modal show-modal">
+        <div class="modal-box">
+            <div class="modal-content">
+                <h1>Check Email</h1>
+                <h4>Please ensure your email follows the below guidelines!</h4>
+                <div class="guidelines-for-signup">
+                    <ul class="modal-list">
+                        <li> It has exactly one '@' symbol</li>
+                        <li> It has at least one '.'</li>
+                        <li> There is at least one . following the '@' symbol</li>
+                        <li> There is at least one character before the '@'</li>
+                        <li> There is at least one character between the '@' and '.'</li>
+                        <li> There is at least one character after the final '.'</li>
+                    </ul>
+                </div>
+                <div class="centering-container">
+                    <form action="/signup">
+                        <button id="try-again">Please try again</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
     <script src="{{ url_for('static',filename='signup.js') }}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ key }}&libraries=places&callback=initMap"></script>
 {% endblock %}

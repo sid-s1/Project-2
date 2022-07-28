@@ -13,7 +13,33 @@ api_key = open('maps.txt','r').read()
 
 @app.route('/')
 def index():
-    return render_template('index.html',user=session.get('email'))
+    email = session.get('email')
+    if session.get('email') != None:
+        stores_and_items = app_service.retrieve_stores_items(email)
+        user_id = app_service.retrieve_userID(email)
+        lat_long = app_service.retrieve_address(email)
+        all_placeids_for_maps = app_service.all_placeids_for_maps(user_id)
+    return render_template('homepage.html',key=api_key,ids=all_placeids_for_maps,user=session.get('email'),lat=lat_long[0],long=lat_long[1],stores=stores_and_items,user_id=user_id)
+
+@app.route('/',methods=["POST"])
+def list_route_action():
+    email = session.get('email')
+    if session.get('email') != None and request.form.get('delete_item_name') == None and request.form.get('delete_store') == None:
+        user_id = app_service.retrieve_userID(email)
+        store_id = request.form.get('store_id')
+        old_item_name = request.form.get('old_item_name')
+        new_item_name = request.form.get('new_item_name')
+        app_service.edit_item(user_id,store_id,old_item_name,new_item_name)
+    elif session.get('email') != None and request.form.get('delete_item_name') != None:
+        user_id = app_service.retrieve_userID(email)
+        store_id = request.form.get('delete_item_store')
+        item_to_delete = request.form.get('delete_item_name')
+        app_service.delete_item(user_id,store_id,item_to_delete)
+    elif session.get('email') != None and request.form.get('delete_store') != None:
+        user_id = app_service.retrieve_userID(email)
+        store_id = request.form.get('delete_store')
+        app_service.delete_store(user_id,store_id)
+    return redirect('/')
 
 @app.route('/list')
 def shopping_list():
@@ -50,29 +76,7 @@ def list_route_display():
         user_id = app_service.retrieve_userID(email)
         lat_long = app_service.retrieve_address(email)
         all_placeids_for_maps = app_service.all_placeids_for_maps(user_id)
-        return render_template('homepage.html',key=api_key,ids=all_placeids_for_maps,user=session.get('email'),lat=lat_long[0],long=lat_long[1],stores=stores_and_items,user_id=user_id)
-
-@app.route('/display',methods=["POST"])
-def list_route_action():
-    email = session.get('email')
-    if session.get('email') != None and request.form.get('delete_item_name') == None and request.form.get('delete_store') == None:
-        user_id = app_service.retrieve_userID(email)
-        store_id = request.form.get('store_id')
-        old_item_name = request.form.get('old_item_name')
-        new_item_name = request.form.get('new_item_name')
-        app_service.edit_item(user_id,store_id,old_item_name,new_item_name)
-        return redirect('/display')
-    elif session.get('email') != None and request.form.get('delete_item_name') != None:
-        user_id = app_service.retrieve_userID(email)
-        store_id = request.form.get('delete_item_store')
-        item_to_delete = request.form.get('delete_item_name')
-        app_service.delete_item(user_id,store_id,item_to_delete)
-        return redirect('/display')
-    elif session.get('email') != None and request.form.get('delete_store') != None:
-        user_id = app_service.retrieve_userID(email)
-        store_id = request.form.get('delete_store')
-        app_service.delete_store(user_id,store_id)
-        return redirect('/display')
+        return render_template('route.html',key=api_key,ids=all_placeids_for_maps,user=session.get('email'),lat=lat_long[0],long=lat_long[1],stores=stores_and_items,user_id=user_id)
 
 @app.route('/signup')
 def signup_page():

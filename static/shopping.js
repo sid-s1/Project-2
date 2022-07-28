@@ -10,6 +10,10 @@ const formBtn = document.querySelector('#form-btn');
 let autoComplete;
 formBtn.disabled = true;
 
+if (storeSelect.value === 'default') {
+    addItem.disabled = true;
+}
+
 function formBtnEnable(event) {
     if (searchField.value) {
         formBtn.disabled = false;
@@ -17,6 +21,11 @@ function formBtnEnable(event) {
     else {
         formBtn.disabled = true;
     }
+}
+
+function disableAddItem() {
+    addItem.disabled = true;
+    addedItemField.id = 'error-bordered-input-box';
 }
 
 [addedItemField, searchField].forEach((element) => {
@@ -32,47 +41,25 @@ function checkAddedItemFieldForCommas() {
             addedItemField.removeAttribute('id');
         }
         else {
-            addItem.disabled = true;
-            addedItemField.id = 'error-bordered-input-box';
+            disableAddItem();
         }
     }
     else {
-        addItem.disabled = true;
-        addedItemField.id = 'error-bordered-input-box';
+        disableAddItem();
     }
 }
 
-if (storeSelect.value === 'default') {
-    addItem.disabled = true;
+function changeWidthBlur(event) {
+    event.target.style.width = "225px";
+    event.target.style.minWidth = "225px";
 }
-
-addedItemField.addEventListener('focus', changeWidthFocus);
-addedItemField.addEventListener('blur', changeWidthBlur);
-
-storeSelect.addEventListener('change', function () {
-    checkAddedItemFieldForCommas();
-    addedItemField.addEventListener('input', function () {
-        checkAddedItemFieldForCommas();
-    });
-});
 
 function changeWidthFocus(event) {
     event.target.style.width = (event.target.value.length + 1) * 8 + "px";
     event.target.style.minWidth = "300px";
+    formBtn.style.width = "fit-content";
+    addItem.style.width = "fit-content";
 }
-
-function changeWidthBlur(event) {
-    event.target.style.minWidth = "225px";
-    event.target.style.width = (event.target.value.length + 1) * 8 + "px";
-}
-
-searchField.addEventListener('focus', changeWidthFocus);
-searchField.addEventListener('blur', changeWidthBlur);
-
-searchField.addEventListener('blur', function () {
-    searchField.style.minWidth = "225px";
-    searchField.style.width = (searchField.value.length + 1) * 8 + "px";
-});
 
 function initMap() {
     autoComplete = new google.maps.places.Autocomplete(searchField, {
@@ -88,9 +75,20 @@ function onPlaceChanged() {
     if (!place.geometry) {
         searchField.placeholder = "Enter a place";
     }
-    else {
-        const p = document.createElement('p');
-        p.textContent = place.name;
-        document.body.appendChild(p);
-    }
 }
+
+searchField.addEventListener('blur', function () {
+    searchField.style.minWidth = "225px";
+});
+
+[searchField, addedItemField].forEach((element) => {
+    element.addEventListener('focus', changeWidthFocus);
+    element.addEventListener('blur', changeWidthBlur);
+});
+
+storeSelect.addEventListener('change', function () {
+    checkAddedItemFieldForCommas();
+    addedItemField.addEventListener('input', function () {
+        checkAddedItemFieldForCommas();
+    });
+});

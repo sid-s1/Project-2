@@ -34,7 +34,7 @@
                         {% endfor %}
                     </ul>
                     <div class="store-footer">
-                        <form action="/display" METHOD="POST">
+                        <form action="/" METHOD="POST">
                             <input type="hidden" name="delete_store" value="{{ store.id }}">
                             <button class="delete-store-btn">Delete Store</button>
                         </form>
@@ -48,7 +48,7 @@
         <div class="modal-box">
             <div class="modal-content">
                 <h1>Edit Item</h1>
-                <form action="/display" method="POST">
+                <form action="/" method="POST">
                     <div class="form-group">
                         <label for="item-name" class="modal-form-label">Item Name:</label>
                         <input type="hidden" id="store-id" name="store_id">
@@ -62,5 +62,5 @@
             </div>
         </div>
     </div>
-    <script src="{{ url_for('static',filename='edit_item.js') }}"></script>
+    <script src="{{ url_for('static',filename='current_list.js') }}"></script>
 {% endblock %}

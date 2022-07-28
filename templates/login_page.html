@@ -2,22 +2,24 @@
 
 {% block body %}
     <section class="centered-list-display">
-        <div class="centered-list-child flex-for-col" id="signup-fields">
+        <div class="centered-list-child signup-flex login-box" id="signup-fields">
             <header>
                 <h3>Log In</h3>
             </header>
-            <form action="/login" method="POST" class="flex-for-col">
-                <label for="email">
-                    Email:
-                    <input type="text" required name="email" class="bordered-input-box">
+            <form action="/login" method="POST" class="signup-flex">
+                <label for="email" class="label-flex">
+                    <p>Email:</p>
+                    <input type="text" required name="email" class="bordered-input-box login-input" id="login-email">
                 </label>
-                <label for="password">
-                    Password:
-                    <input type="password" required name="entered_password" class="bordered-input-box">
+                <label for="password" class="label-flex">
+                    <p>Password:</p>
+                    <input type="password" required name="entered_password" class="bordered-input-box login-input" id="login-pw">
                 </label>
-                <button class="centered-btn" id="form-btn">
-                    Submit
-                </button>
+                <div class="centering-container">
+                    <button id="form-btn">
+                        Submit
+                    </button>
+                </div>
             </form>
         </div>
     </section>
