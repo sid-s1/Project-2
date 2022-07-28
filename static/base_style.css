@@ -1,3 +1,6 @@
+* {
+    font-family: 'El Messiri', sans-serif;
+}
 body {
     background-color: rgb(249, 249, 212);
     line-height: 2;
@@ -99,16 +102,17 @@ body {
 header {
     border-bottom: 2px solid rgba(1, 67, 1, 0.816);
     color: rgba(1, 67, 1, 0.816);
-    font-size: 2em;
+    font-size: 1.8vw;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.homepage header {
-    margin-top: 3%;
+.homepage header h3 {
+    margin-top: 4%;
+    margin-left: 5%;
 }
 .homepage .store-header {
-    font-size: 1.25em;
+    font-size: 1.25vw;
 }
 .homepage .item-list {
     border-bottom: solid 1px rgba(1, 67, 1, 0.816);

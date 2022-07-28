@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request, render_template, session
+from flask import Flask, redirect, request, render_template, session, url_for
 import os
 import app_service
 from dotenv import load_dotenv
@@ -63,9 +63,11 @@ def shopping_list_search():
 
     if app_service.check_store_exists(user_id,store_name) != 'exists':
         app_service.store_place_details(place_id,store_name,user_id)
-        return redirect('/list')
+        email = session.get('email')
+        stores_and_items = app_service.retrieve_stores_items(email)
+        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='store',name=store_name)
     else:
-        return render_template('entity_exists.html',entity='store')
+        return render_template('shopping.html',entity='store',key=api_key,user=session.get('email'))
 
 
 @app.route('/display')
@@ -138,15 +140,24 @@ def logout():
         print('no')
     return redirect('/')
 
+@app.route('/add_item')
+def add_item_page():
+    email = session.get('email')
+    if session.get('email') != None:
+        stores_and_items = app_service.retrieve_stores_items(email)
+        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items)
+
 @app.route('/add_item',methods=["POST"])
 def add_item_action():
     store_id = request.form.get('selected-store')
     added_item = request.form.get('added-item')
     user_id = app_service.retrieve_userID(session.get('email'))
     if app_service.store_items(user_id,store_id,added_item) != 'exists' and app_service.store_items(user_id,store_id,added_item) != None:
-        return redirect('/list')
+        email = session.get('email')
+        stores_and_items = app_service.retrieve_stores_items(email)
+        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='item',name=added_item,store_id=store_id)
     else:
-        return render_template('entity_exists.html',entity='item')
+        return render_template('shopping.html',key=api_key,user=session.get('email'),entity='item')
 
 if __name__ == '__main__':
     app.run(debug=True)

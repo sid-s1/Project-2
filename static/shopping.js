@@ -7,8 +7,26 @@ const addItem = document.querySelector('#add-item-btn');
 const storeSelect = document.querySelector('#store-select-dropdown');
 const addedItemField = document.querySelector('#added-item');
 const formBtn = document.querySelector('#form-btn');
+const goBackBtns = document.querySelectorAll('.go-back');
+const modal = document.querySelector('.modal');
+const formsForGoingBack = document.querySelectorAll('.form-for-goBack');
 let autoComplete;
 formBtn.disabled = true;
+
+if (modal) {
+    modal.classList.toggle('show-modal');
+    // setTimeout(() => {
+    //     modal.classList.toggle('show-modal');
+    // }, "10");
+}
+
+function toggleModal() {
+    modal.classList.toggle('show-modal');
+}
+
+formsForGoingBack.forEach((element) => {
+    element.addEventListener('submit', toggleModal);
+});
 
 if (storeSelect.value === 'default') {
     addItem.disabled = true;

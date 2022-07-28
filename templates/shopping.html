@@ -29,6 +29,74 @@
             </form>
         </div>
     </section>
+    {% if entity == 'item' %}
+    <div class="modal">
+        <div class="modal-box">
+            <div class="modal-content">
+                <h1>Item already exists</h1>
+                <div class="centering-container repeat-add">
+                    <form class="form-for-goBack">
+                        <button>Go back to add another item</button>
+                    </form>
+                    <form action="/">
+                        <button>Go to Edit Item</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% elif entity == 'store' %}
+    <div class="modal">
+        <div class="modal-box">
+            <div class="modal-content">
+                <h1>Store already exists</h1>
+                <div class="centering-container repeat-add">
+                    <form class="form-for-goBack">
+                        <button class="go-back">Go back to add another Store</button>
+                    </form>
+                    <form action="/">
+                        <button>Go to Delete Store</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if added == 'store' %}
+        <div class="modal">
+            <div class="modal-box">
+                <div class="modal-content">
+                    {% set location = stores[-1].location %}
+                    <h1>Store {{ name }},{{ location }} added!</h1>
+                    <div class="centering-container repeat-add">
+                        <form class="form-for-goBack">
+                            <button class="go-back">Go back to add another Store or Items to your Stores</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% elif added == 'item' %}
+        <div class="modal">
+            <div class="modal-box">
+                <div class="modal-content">
+                    {% for store in stores %}
+                        {% if store.id|int == store_id|int %}
+                        <h1>Item {{ name }} added to Store {{ store.store }}, {{ store.location }}!</h1>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="centering-container repeat-add">
+                        <form class="form-for-goBack">
+                            <button class="go-back">Go back to add another Item</button>
+                        </form>
+                        <form action="/">
+                            <button>Go to Edit Item</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
     <script src="{{ url_for('static',filename='shopping.js') }}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ key }}&libraries=places&callback=initMap"></script>
 {% endblock %}
