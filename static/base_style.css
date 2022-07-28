@@ -41,9 +41,6 @@ body {
     display: flex;
     justify-content: center;
 }
-/* #search-store-field, #added-item {
-    min-width: 225px;
-} */
 #store-search, .centered-list-display {
     display: flex;
     justify-content: center;

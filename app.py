@@ -1,15 +1,17 @@
 from flask import Flask, redirect, request, render_template, session
-import requests, os, psycopg2
+import os
 import app_service
+from dotenv import load_dotenv
 
-# key_from_file = open('sec_key.txt','r').read()
+load_dotenv()
+api_key = os.environ.get('api_key')
+
 SECRET_KEY = os.environ.get('SECRET_KEY','sidisgr8')
 store_list = []
 item_list = {}
 
 app = Flask('__name__')
 app.config['SECRET_KEY'] = SECRET_KEY
-api_key = open('maps.txt','r').read()
 
 @app.route('/')
 def index():
@@ -47,10 +49,6 @@ def shopping_list():
     if session.get('email') != None:
         stores_and_items = app_service.retrieve_stores_items(email)
         return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items)
-
-# based on distance between origin and each destination/waypoint, create a sorted list of place_id's and use that to create a route then
-
-# use places details api google and use place_id to show some details to user in html so they can choose, then once they choose through another form perhaps make it pin drop on maps with route from their home
 
 @app.route('/list',methods=["POST"])
 def shopping_list_search():

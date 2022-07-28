@@ -1,8 +1,10 @@
-from flask import Flask, request, render_template
 import requests, os, psycopg2, bcrypt
+from dotenv import load_dotenv
+
+load_dotenv()
+api_key = os.environ.get('api_key')
 
 DATABASE_URL = os.environ.get('DATABASE_URL','dbname=shopping_list')
-api_key = open('maps.txt','r').read()
 payload={}
 headers = {}
 place_id_dict = {}
