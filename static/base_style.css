@@ -258,13 +258,13 @@ button, .turn-anchor-btn, .centered-btn {
     width: 250px;
     height: 250px;
 }
-button:hover, .centered-btn:hover {
+button:hover, .centered-btn:hover, .turn-anchor-btn:hover {
     transition: ease-in;
     transition-duration: 0.2s;
     background-color: rgba(1, 67, 1, 0.816);
     color: rgb(249, 249, 212);
 }
-button:active, .centered-btn:active {
+button:active, .centered-btn:active, .turn-anchor-btn:active {
     box-shadow: 0px 0px;
 }
 button:disabled {
@@ -320,6 +320,9 @@ button:disabled {
     display: flex;
     justify-content: center;
     margin-top: 10px;
+}
+.repeat-add button {
+    width: 200px;
 }
 .modal-list {
     padding-inline-start: 0;

@@ -6,21 +6,33 @@
             <div class="modal-content">
                 {% if entity == 'item' %}
                 <h1>Item already exists</h1>
-                <div class="modal-footer">
-                    <a href="{{ url_for('shopping_list_search') }}" class="turn-anchor-btn">Go back to add another item</a>
-                    <a href="{{ url_for('list_route_display') }}" class="turn-anchor-btn">Go to edit item</a>
+                <div class="centering-container repeat-add">
+                    <form action="/list">
+                        <button>Go back to add another item</button>
+                    </form>
+                    <form action="/">
+                        <button>Go to edit item</button>
+                    </form>
                 </div>
                 {% elif entity == 'store' %}
                 <h1>Store already exists</h1>
-                <div class="modal-footer">
-                    <a href="{{ url_for('shopping_list_search') }}" class="turn-anchor-btn">Go back to add another store</a>
-                    <a href="{{ url_for('list_route_display') }}" class="turn-anchor-btn">Go to delete store</a>
+                <div class="centering-container repeat-add">
+                    <form action="/list">
+                        <button>Go back to add another store</button>
+                    </form>
+                    <form action="/">
+                        <button>Go to delete store</button>
+                    </form>
                 </div>
                 {% elif entity == 'email' %}
                 <h1>Email already exists</h1>
-                <div class="modal-footer">
-                    <a href="{{ url_for('login_page') }}" class="turn-anchor-btn">Please login</a>
-                    <a href="{{ url_for('signup_page') }}" class="turn-anchor-btn">Cancel, signup with another email</a>
+                <div class="centering-container repeat-add">
+                    <form action="/login">
+                        <button>Please login</button>
+                    </form>
+                    <form action="/signup">
+                        <button>Cancel, signup with another email</button>
+                    </form>
                 </div>
                 {% endif %}
             </div>
