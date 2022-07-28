@@ -10,14 +10,29 @@ const formBtn = document.querySelector('#form-btn');
 const goBackBtns = document.querySelectorAll('.go-back');
 const modal = document.querySelector('.modal');
 const formsForGoingBack = document.querySelectorAll('.form-for-goBack');
+const leavePage = document.querySelector('.leave-page');
+const btnLeavePage = document.querySelector('.leave-page button')
 let autoComplete;
 formBtn.disabled = true;
 
+function submitForm() {
+    leavePage.submit();
+}
+
+if (leavePage) {
+    leavePage.addEventListener('submit', function (event) {
+        event.preventDefault();
+    });
+    btnLeavePage.addEventListener('click', function () {
+        toggleModal();
+        setTimeout("submitForm()", 500);
+    });
+}
+
 if (modal) {
-    modal.classList.toggle('show-modal');
-    // setTimeout(() => {
-    //     modal.classList.toggle('show-modal');
-    // }, "10");
+    setTimeout(() => {
+        modal.classList.toggle('show-modal');
+    }, "100");
 }
 
 function toggleModal() {
