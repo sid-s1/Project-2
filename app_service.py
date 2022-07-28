@@ -170,6 +170,7 @@ def check_email_db(email):
         return True
     else:
         return False
+    cur.close()
 
 def check_login_details(email,password):
     conn = psycopg2.connect(DATABASE_URL)

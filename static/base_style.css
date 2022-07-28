@@ -91,6 +91,7 @@ body {
     overflow: hidden;
     margin: 2%;
     font-size: 2em;
+    color: rgba(1, 67, 1, 0.816);
 }
 #signup-fields {
     text-align: start;
