@@ -185,14 +185,24 @@ def add_item_action():
     store_id = request.form.get('selected-store')
     added_item = request.form.get('added-item')
     user_id = app_service.retrieve_userID(session.get('email'))
-    if app_service.store_items(user_id,store_id,added_item) != 'exists' and app_service.store_items(user_id,store_id,added_item) != None:
+    current_items = app_service.retrieve_items(user_id,store_id)
+    if app_service.check_item_exists(added_item,current_items) == False:
+        app_service.store_items(user_id,store_id,added_item)
         user_name = app_service.retrieve_userName(email)
         stores_and_items = app_service.retrieve_stores_items(email)
         return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='item',entity=None,name=added_item,store_id=store_id,user_name=user_name)
     else:
         user_name = app_service.retrieve_userName(email)
-        return redirect('/')
-        # return render_template('shopping.html',key=api_key,user=session.get('email'),entity='item',user_name=user_name,added=None)
+        return render_template('shopping.html',key=api_key,user=session.get('email'),entity='item',user_name=user_name,added=None)
+
+    # if app_service.store_items(user_id,store_id,added_item) != 'exists' and app_service.store_items(user_id,store_id,added_item) != None:
+    #     user_name = app_service.retrieve_userName(email)
+    #     stores_and_items = app_service.retrieve_stores_items(email)
+    #     return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='item',entity=None,name=added_item,store_id=store_id,user_name=user_name)
+    # else:
+    #     user_name = app_service.retrieve_userName(email)
+    #     return redirect('/')
+    #     return render_template('shopping.html',key=api_key,user=session.get('email'),entity='item',user_name=user_name,added=None)
 
 if __name__ == '__main__':
     app.run(debug=True)
