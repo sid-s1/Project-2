@@ -165,7 +165,7 @@ header {
     background-color: rgba(0, 0, 0, 0.5);
     opacity: 0;
     transform: scale(1.1);
-    transition: visibility 0s linear 0.2s, opacity 0.2s 0s, transform 0.2s;
+    transition: visibility 0s linear 0.35s, opacity 0.35s 0s, transform 0.35s;
 }
 .side-btns {
     display: flex;
@@ -194,7 +194,7 @@ header {
     z-index: 1;
     opacity: 1;
     transform: scale(1.0);
-    transition: visibility 0s linear 0s, opacity 0.2s 0s, transform 0.2s;
+    transition: visibility 0s linear 0s, opacity 0.35s 0s, transform 0.35s;
 }
 .rand-flex {
     display: flex;
