@@ -66,18 +66,16 @@ def shopping_list_search():
     place_id = app_service.get_place_id(store_search_json)
     store_name = app_service.get_store_name(store_search_json)
     arr_store_name = store_name.split(",")
-    print(arr_store_name)
     if len(arr_store_name) > 2:
         new_store_name = arr_store_name[0] + "," + arr_store_name[1]
     else:
         new_store_name = store_name
 
     if app_service.check_store_exists(user_id,store_name) != 'exists':
-        app_service.store_place_details(place_id,store_name,user_id)
         email = session.get('email')
+        app_service.store_place_details(email,place_id,store_name,user_id)
         user_name = app_service.retrieve_userName(email)
         stores_and_items = app_service.retrieve_stores_items(email)
-        print(new_store_name)
         return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='store',entity=None,name=new_store_name,user_name=user_name)
     else:
         return render_template('shopping.html',entity='store',key=api_key,user=session.get('email'))
@@ -164,8 +162,6 @@ def logout():
     action = request.form.get('action')
     if action == 'Yes please':
         session.pop('email')
-    else:
-        print('no')
     return redirect('/')
 
 @app.route('/add_item')

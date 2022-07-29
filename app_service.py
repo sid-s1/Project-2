@@ -25,7 +25,10 @@ def get_store_name(response):
     if len(response['predictions']) > 0:
         return response['predictions'][0]['structured_formatting']['main_text'] + "," + response['predictions'][0]['structured_formatting']['secondary_text']
 
-def store_place_details(place_id,store_name,user_id):
+def store_place_details(email,place_id,store_name,user_id):
+    user_address = retrieve_address(email)
+    lat = user_address[0]
+    long = user_address[1]
     if check_store_exists(user_id,store_name) != 'exists':
         url_for_details = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={api_key}"
         response = requests.request("GET",url_for_details,headers=headers,data=payload)
@@ -36,7 +39,7 @@ def store_place_details(place_id,store_name,user_id):
             if 'locality' in component['types']:
                 location = component['short_name']
 
-        url_for_distance = f"https://maps.googleapis.com/maps/api/distancematrix/json?origins=-33.819450%2C151.004166&destinations={destination}&key={api_key}"
+        url_for_distance = f"https://maps.googleapis.com/maps/api/distancematrix/json?origins={lat}%2C{long}&destinations={destination}&key={api_key}"
         response_for_distance = requests.request("GET", url_for_distance, headers=headers, data=payload)
         distance_from_origin = float(response_for_distance.json()['rows'][0]['elements'][0]['distance']['text'].split()[0])
 
