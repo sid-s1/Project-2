@@ -11,7 +11,7 @@ const formBtn = document.querySelector('#form-btn');
 const goBackBtns = document.querySelectorAll('.go-back');
 const formsForGoingBack = document.querySelectorAll('.form-for-goBack');
 const leavePageForms = document.querySelectorAll('.leave-page');
-const leavePageBtns = document.querySelectorAll('.leave-page button')
+const leavePageBtns = document.querySelectorAll('.leave-page button');
 let autoComplete;
 formBtn.disabled = true;
 

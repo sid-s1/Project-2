@@ -64,6 +64,9 @@
         </div>
     </div>
 </div>
+{% else %}
+<div>
+</div>
 {% endif %}
 {% if entity == 'item' and entity != None and added == None %}
 <div class="modal">
@@ -96,6 +99,9 @@
             </div>
         </div>
     </div>
+</div>
+{% else %}
+<div>
 </div>
 {% endif %}
 <script src="{{ url_for('static',filename='shopping.js') }}"></script>
