@@ -52,7 +52,7 @@ def shopping_list():
     if session.get('email') != None:
         user_name = app_service.retrieve_userName(email)
         stores_and_items = app_service.retrieve_stores_items(email)
-        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,user_name=user_name)
+        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,user_name=user_name,entity=None)
     else:
         return render_template('login_first.html',user=session.get('email'))
 
@@ -190,7 +190,6 @@ def add_item_action():
         stores_and_items = app_service.retrieve_stores_items(email)
         return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='item',entity=None,name=added_item,store_id=store_id,user_name=user_name)
     else:
-        print('im in else')
         user_name = app_service.retrieve_userName(email)
         return render_template('shopping.html',key=api_key,user=session.get('email'),entity='item',user_name=user_name,added=None)
 
