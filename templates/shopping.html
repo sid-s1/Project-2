@@ -30,6 +30,41 @@
         </form>
     </div>
 </section>
+{% if added == 'store' %}
+<div class="modal">
+    <div class="modal-box">
+        <div class="modal-content">
+            {% set location = stores[-1].location %}
+            <h1>Store {{ name }},{{ location }} added!</h1>
+            <div class="centering-container repeat-add">
+                <form class="form-for-goBack" action="">
+                    <button class="go-back">Go back to add another Store or Items to your Stores</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% elif added == 'item' %}
+<div class="modal">
+    <div class="modal-box">
+        <div class="modal-content">
+            {% for store in stores %}
+            {% if store.id|int == store_id|int %}
+            <h1>Item {{ name }} added to Store {{ store.store }}, {{ store.location }}!</h1>
+            {% endif %}
+            {% endfor %}
+            <div class="centering-container repeat-add">
+                <form class="form-for-goBack" action="">
+                    <button class="go-back">Go back to add another Item</button>
+                </form>
+                <form class="leave-page" action="/">
+                    <button>Go to Edit Item</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 {% if entity == 'item' and entity != None and added == None %}
 <div class="modal">
     <div class="modal-box">
@@ -57,42 +92,6 @@
                 </form>
                 <form class="leave-page" action="/">
                     <button>Go to Delete Store</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-{% endif %}
-{% if added == 'store' %}
-<div class="modal">
-    <div class="modal-box">
-        <div class="modal-content">
-            {% set location = stores[-1].location %}
-            <h1>Store {{ name }},{{ location }} added!</h1>
-            <div class="centering-container repeat-add">
-                <form class="form-for-goBack" action="">
-                    <button class="go-back">Go back to add another Store or Items to your Stores</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-{% elif added == 'item' %}
-<p>trial</p>
-<div class="modal">
-    <div class="modal-box">
-        <div class="modal-content">
-            {% for store in stores %}
-            {% if store.id|int == store_id|int %}
-            <h1>Item {{ name }} added to Store {{ store.store }}, {{ store.location }}!</h1>
-            {% endif %}
-            {% endfor %}
-            <div class="centering-container repeat-add">
-                <form class="form-for-goBack" action="">
-                    <button class="go-back">Go back to add another Item</button>
-                </form>
-                <form class="leave-page" action="/">
-                    <button>Go to Edit Item</button>
                 </form>
             </div>
         </div>
