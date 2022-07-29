@@ -35,7 +35,7 @@
             <div class="modal-content">
                 <h1>Item already exists</h1>
                 <div class="centering-container repeat-add">
-                    <form class="form-for-goBack" method="dialog">
+                    <form class="form-for-goBack" action="">
                         <button>Go back to add another item</button>
                     </form>
                     <form class="leave-page" action="/">
@@ -51,7 +51,7 @@
             <div class="modal-content">
                 <h1>Store already exists</h1>
                 <div class="centering-container repeat-add">
-                    <form class="form-for-goBack" method="dialog">
+                    <form class="form-for-goBack" action="">
                         <button class="go-back">Go back to add another Store</button>
                     </form>
                     <form class="leave-page" action="/">
@@ -69,7 +69,7 @@
                     {% set location = stores[-1].location %}
                     <h1>Store {{ name }},{{ location }} added!</h1>
                     <div class="centering-container repeat-add">
-                        <form class="form-for-goBack" method="dialog">
+                        <form class="form-for-goBack" action="">
                             <button class="go-back">Go back to add another Store or Items to your Stores</button>
                         </form>
                     </div>
@@ -86,7 +86,7 @@
                         {% endif %}
                     {% endfor %}
                     <div class="centering-container repeat-add">
-                        <form class="form-for-goBack" method="dialog">
+                        <form class="form-for-goBack" action="">
                             <button class="go-back">Go back to add another Item</button>
                         </form>
                         <form class="leave-page" action="/">
