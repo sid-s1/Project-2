@@ -24,7 +24,9 @@ function submitForm() {
 }
 
 function toggleModal() {
-    modal.classList.toggle('show-modal');
+    if (modal) {
+        modal.classList.toggle('show-modal');
+    }
 }
 
 if (leavePageForms) {
@@ -44,17 +46,26 @@ if (leavePageForms) {
     }
 }
 
+addItem.addEventListener('click', function () {
+    toggleModal();
+    const trial = addItem.parentNode;
+    const formTrial = trial.parentNode;
+    setTimeout(function () {
+        formTrial.submit();
+    }, 500);
+});
+
 if (modal) {
     setTimeout(() => {
         modal.classList.toggle('show-modal');
-    }, "350");
+    }, 10);
 }
 
 formsForGoingBack.forEach((element) => {
     element.addEventListener('submit', toggleModal);
 });
 
-function formBtnEnable(event) {
+function formBtnEnable() {
     if (searchField.value) {
         formBtn.disabled = false;
     }
@@ -103,7 +114,7 @@ function changeWidthFocus(event) {
 
 function initMap() {
     autoComplete = new google.maps.places.Autocomplete(searchField, {
-        types: ['cafe', 'convenience_store', 'department_store', 'drugstore', 'supermarket'],
+        types: ['store', 'convenience_store', 'department_store', 'drugstore', 'supermarket'],
         componentRestrictions: { 'country': ['AU'] },
         fields: ['place_id', 'geometry', 'name']
     });

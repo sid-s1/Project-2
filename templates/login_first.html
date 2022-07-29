@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<section class="centered-list-display">
+    <div class="centered-list-child flex-for-col" id="map-flexbox">
+        <h2>You need to <a href="{{ url_for('login_page') }}">login</a> first!</h2>
+        <h2>Or, <a href="{{ url_for('signup_page') }}">signup</a> if you need an account!</h2>
+    </div>
+</section>
+{% endblock %}

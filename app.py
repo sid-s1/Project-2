@@ -17,11 +17,12 @@ app.config['SECRET_KEY'] = SECRET_KEY
 def index():
     email = session.get('email')
     if session.get('email') != None:
+        user_name = app_service.retrieve_userName(email)
         stores_and_items = app_service.retrieve_stores_items(email)
         user_id = app_service.retrieve_userID(email)
         lat_long = app_service.retrieve_address(email)
         all_placeids_for_maps = app_service.all_placeids_for_maps(user_id)
-        return render_template('homepage.html',key=api_key,ids=all_placeids_for_maps,user=session.get('email'),lat=lat_long[0],long=lat_long[1],stores=stores_and_items,user_id=user_id)
+        return render_template('homepage.html',key=api_key,ids=all_placeids_for_maps,user=session.get('email'),lat=lat_long[0],long=lat_long[1],stores=stores_and_items,user_id=user_id,user_name=user_name)
     else:
         return render_template('homepage.html',user=session.get('email'),key=api_key)
 
@@ -49,8 +50,11 @@ def list_route_action():
 def shopping_list():
     email = session.get('email')
     if session.get('email') != None:
+        user_name = app_service.retrieve_userName(email)
         stores_and_items = app_service.retrieve_stores_items(email)
-        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items)
+        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,user_name=user_name)
+    else:
+        return render_template('login_first.html',user=session.get('email'))
 
 @app.route('/list',methods=["POST"])
 def shopping_list_search():
@@ -64,8 +68,9 @@ def shopping_list_search():
     if app_service.check_store_exists(user_id,store_name) != 'exists':
         app_service.store_place_details(place_id,store_name,user_id)
         email = session.get('email')
+        user_name = app_service.retrieve_userName(email)
         stores_and_items = app_service.retrieve_stores_items(email)
-        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='store',name=store_name)
+        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='store',name=store_name,user_name=user_name)
     else:
         return render_template('shopping.html',entity='store',key=api_key,user=session.get('email'))
 
@@ -74,16 +79,23 @@ def shopping_list_search():
 def list_route_display():
     email = session.get('email')
     if session.get('email') != None:
+        user_name = app_service.retrieve_userName(email)
         stores_and_items = app_service.retrieve_stores_items(email)
         user_id = app_service.retrieve_userID(email)
         lat_long = app_service.retrieve_address(email)
         all_placeids_for_maps = app_service.all_placeids_for_maps(user_id)
-        return render_template('route.html',key=api_key,ids=all_placeids_for_maps,user=session.get('email'),lat=lat_long[0],long=lat_long[1],stores=stores_and_items,user_id=user_id)
+        return render_template('route.html',key=api_key,ids=all_placeids_for_maps,user=session.get('email'),lat=lat_long[0],long=lat_long[1],stores=stores_and_items,user_id=user_id,user_name=user_name)
+    else:
+        return render_template('login_first.html',user=session.get('email'))
 
 @app.route('/signup')
 def signup_page():
     if session.get('email') == None:
         return render_template('signup_page.html',key=api_key,user=session.get('email'),invalid_email=False)
+    else:
+        email = session.get('email')
+        user_name = app_service.retrieve_userName(email)
+        return render_template('logged_in.html',user=session.get('email'),user_name=user_name)
 
 @app.route('/signup',methods=["POST"])
 def signup_process():
@@ -100,7 +112,8 @@ def signup_process():
             app_service.create_user_on_db(first_name,email,hashed_password,home_latitude,home_longitude)
             return redirect('/login')
         else:
-            return render_template('signup_page.html',key=api_key,user=session.get('email'),entity='email')
+            user_name = app_service.retrieve_userName(email)
+            return render_template('signup_page.html',key=api_key,user=session.get('email'),entity='email',user_name=user_name)
     else:
         return render_template('signup_page.html',key=api_key,user=session.get('email'),invalid_email=True)
 
@@ -108,6 +121,10 @@ def signup_process():
 def login_page():
     if session.get('email') == None:
         return render_template('login_page.html',user=session.get('email'))
+    else:
+        email = session.get('email')
+        user_name = app_service.retrieve_userName(email)
+        return render_template('logged_in.html',user=session.get('email'),user_name=user_name)
 
 @app.route('/login',methods=["POST"])
 def login_check():
@@ -129,7 +146,11 @@ def trial():
 @app.route('/logout_check')
 def logout_decision():
     if session.get('email') != None:
-        return render_template('logout_decision.html',user=session.get('email'))
+        email = session.get('email')
+        user_name = app_service.retrieve_userName(email)
+        return render_template('logout_decision.html',user=session.get('email'),user_name=user_name)
+    else:
+        return render_template('login_page.html',user=session.get('email'))
 
 @app.route('/logout',methods=["POST"])
 def logout():
@@ -144,8 +165,11 @@ def logout():
 def add_item_page():
     email = session.get('email')
     if session.get('email') != None:
+        user_name = app_service.retrieve_userName(email)
         stores_and_items = app_service.retrieve_stores_items(email)
-        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items)
+        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,user_name=user_name)
+    else:
+        return render_template('login_page.html',user=session.get('email'))
 
 @app.route('/add_item',methods=["POST"])
 def add_item_action():
@@ -154,10 +178,12 @@ def add_item_action():
     user_id = app_service.retrieve_userID(session.get('email'))
     if app_service.store_items(user_id,store_id,added_item) != 'exists' and app_service.store_items(user_id,store_id,added_item) != None:
         email = session.get('email')
+        user_name = app_service.retrieve_userName(email)
         stores_and_items = app_service.retrieve_stores_items(email)
-        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='item',name=added_item,store_id=store_id)
+        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='item',name=added_item,store_id=store_id,user_name=user_name)
     else:
-        return render_template('shopping.html',key=api_key,user=session.get('email'),entity='item')
+        user_name = app_service.retrieve_userName(email)
+        return render_template('shopping.html',key=api_key,user=session.get('email'),entity='item',user_name=user_name)
 
 if __name__ == '__main__':
     app.run(debug=True)

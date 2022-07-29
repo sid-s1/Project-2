@@ -40,7 +40,7 @@ for (const pgRefreshBtn of pgRefreshBtns) {
         const formToSubmit = containerDiv.parentNode;
         setTimeout(function () {
             formToSubmit.submit();
-        }, 500);
+        }, "500");
     });
 }
 

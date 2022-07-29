@@ -45,7 +45,7 @@ if (leavePage) {
     });
     btnLeavePage.addEventListener('click', function () {
         toggleModal();
-        setTimeout("submitForm()", 500);
+        setTimeout("submitForm()", "500");
     });
 }
 

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<section class="centered-list-display">
+    <div class="centered-list-child flex-for-col" id="map-flexbox">
+        <h2>You are logged in already!</h2>
+        <h2>Feel free to add some stores and items via <a href="{{ url_for('shopping_list') }}">this</a> link</h2>
+    </div>
+</section>
+{% endblock %}

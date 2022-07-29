@@ -10,15 +10,18 @@ headers = {}
 place_id_dict = {}
 
 def store_search_json(store):
-    url = f"https://maps.googleapis.com/maps/api/place/autocomplete/json?input={store}&location=-33.814999%2C151.001114&radius=100000&strictbounds=true&key={api_key}"
+    url = f"https://maps.googleapis.com/maps/api/place/autocomplete/json?input={store}&location=-33.814999%2C151.001114&radius=10000000&strictbounds=true&key={api_key}"
     response = requests.request("GET", url, headers=headers, data=payload)
     return response.json()
 
 def get_place_id(response):
-    return response['predictions'][0]['place_id']
+    if len(response['predictions']) > 0:
+        return response['predictions'][0]['place_id']
 
 def get_store_name(response):
-    return response['predictions'][0]['structured_formatting']['main_text']
+    print(response)
+    if len(response['predictions']) > 0:
+        return response['predictions'][0]['structured_formatting']['main_text']
 
 def store_place_details(place_id,store_name,user_id):
     if check_store_exists(user_id,store_name) != 'exists':
@@ -45,65 +48,6 @@ def store_place_details(place_id,store_name,user_id):
     else:
         return 'exists'
 
-# def all_store_distances(dict):
-#     dest = ""
-#     i = 0
-#     for place,params in dict.items():
-#         i += 1
-#         if len(dict.items()) == i:
-#             dest = dest + f"{params['latitude']}%2C{params['longitude']}"
-#         else:
-#             dest = dest + f"{params['latitude']}%2C{params['longitude']}%7C"
-#     print(dest)
-#     url = f"https://maps.googleapis.com/maps/api/distancematrix/json?origins=-33.819450%2C151.004166&destinations={dest}&key={api_key}"
-#     response = requests.request("GET", url, headers=headers, data=payload)
-
-#     i = 0
-#     for place,params in dict.items():
-#         params['distance_from_origin'] = response.json()['rows'][0]['elements'][i]['distance']['text'].split()[0]
-#         i += 1
-#     dict = sorted(dict.items(),key=lambda x: x[1]['distance_from_origin'])
-#     return dict
-
-# def farthest_destination(list):
-#     lat_long = []
-#     # lat and long for the farthest place
-#     for param in list[-1]:
-#         if 'latitude' in param:
-#             lat_long.append(param['latitude'])
-#         if 'longitude' in param:
-#             lat_long.append(param['longitude'])
-#     return lat_long
-
-# def waypoints(list):
-#     print(list)
-#     i = 0
-#     for item in list:
-#         i += 1
-#         for param in item:
-#             if 'place_id' in param:
-#                 place_id = param['place_id']
-#                 if len(list) == i:
-#                     all_id = place_id
-#                 else:
-#                     all_id = place_id + "|"
-#     print(all_id)
-#     return all_id
-
-# def farthest_destination():
-#     lat_long = []
-#     conn = psycopg2.connect(DATABASE_URL)
-#     cur = conn.cursor()
-#     cur.execute("""
-#     SELECT latitude,longitude FROM stores_1 WHERE
-#     distance_from_origin=(SELECT MAX(distance_from_origin) FROM stores_1)
-#     """)
-#     result = cur.fetchone()
-#     lat_long.append(result[0])
-#     lat_long.append(result[1])
-#     cur.close()
-#     return lat_long
-
 def all_placeids_for_maps(user_id):
     waypoints_string = ""
     ids = []
@@ -114,7 +58,6 @@ def all_placeids_for_maps(user_id):
     """,(user_id,))
     results = cur.fetchall()
     cur.close()
-    # select lat,long as well and then for each, from line 119 make calculations as to which should be the next waypoint - use distance google api to get lowest distance one
     for row in results:
         ids.append(row[0])
     while ids:
@@ -193,6 +136,15 @@ def retrieve_userID(email):
     """,(email,))
     user_id = cur.fetchall()[0][0]
     return user_id
+
+def retrieve_userName(email):
+    conn = psycopg2.connect(DATABASE_URL)
+    cur = conn.cursor()
+    cur.execute("""
+    SELECT first_name FROM users WHERE email=%s
+    """,(email,))
+    user_name = cur.fetchall()[0][0]
+    return user_name
 
 def retrieve_stores(userID):
     stores = []
