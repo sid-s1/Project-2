@@ -32,9 +32,8 @@
                         {% endfor %}
                     </ul>
                     <div class="store-footer">
-                        <form action="/" METHOD="POST">
-                            <input type="hidden" name="delete_store" value="{{ store.id }}">
-                            <button class="delete-store-btn">Delete Store</button>
+                            <input type="hidden" value="{{ store.id }}">
+                            <button class="delete-store-prompt">Delete Store</button>
                         </form>
                     </div>
                 </div>
@@ -94,6 +93,24 @@
                 </form>
                 <div class="side-btns">
                     <button id="cancel-delete">No! Go back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="delete-store-modal">
+        <div class="modal-box">
+            <div class="modal-content">
+                <h1>Are you sure you want to delete this store?</h1>
+                <form action="/" method="POST">
+                    <div class="form-group">
+                        <input type="hidden" name="delete_store" id="store-confirm-del">
+                        <div class="side-btns">
+                            <button class="delete-store-btn">Delete Store</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="side-btns">
+                    <button id="cancel-store-delete">No! Go back</button>
                 </div>
             </div>
         </div>

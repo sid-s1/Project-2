@@ -5,10 +5,14 @@ const oldItemName = document.querySelector('#old-item-name');
 const delItemName = document.querySelector('#item-name-del');
 const storeId = document.querySelector('#store-id');
 const delStoreId = document.querySelector('#store-id-del');
+const delStorePrompt = document.querySelector('.delete-store-prompt');
+const storeDeleteValue = document.querySelector('#store-confirm-del');
 const cancelEdit = document.querySelector('#cancel-edit');
 const cancelDel = document.querySelector('#cancel-delete');
+const cancelStoreDel = document.querySelector('#cancel-store-delete');
 const modal = document.querySelector('.modal');
 const deleteModal = document.querySelector('.delete-modal');
+const deleteStoreModal = document.querySelector('.delete-store-modal');
 
 for (const editBtn of editBtns) {
     editBtn.addEventListener('click', function () {
@@ -31,10 +35,20 @@ for (const deleteBtn of deleteBtns) {
     });
 }
 
+delStorePrompt.addEventListener('click', function () {
+    deleteStoreModal.classList.toggle('show-modal');
+    const storeIdDeletion = delStorePrompt.previousElementSibling.value;
+    storeDeleteValue.value = storeIdDeletion;
+});
+
 cancelEdit.addEventListener('click', function () {
     modal.classList.toggle('show-modal');
 });
 
 cancelDel.addEventListener('click', function () {
     deleteModal.classList.toggle('show-modal');
+});
+
+cancelStoreDel.addEventListener('click', function () {
+    deleteStoreModal.classList.toggle('show-modal');
 });
