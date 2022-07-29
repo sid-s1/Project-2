@@ -175,7 +175,7 @@ def add_item_page():
     if session.get('email') != None:
         user_name = app_service.retrieve_userName(email)
         stores_and_items = app_service.retrieve_stores_items(email)
-        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,user_name=user_name)
+        return render_template('shopping.html',key=api_key,user=session.get('email'),entity=None,stores=stores_and_items,user_name=user_name)
     else:
         return render_template('login_first.html',user=session.get('email'))
 
