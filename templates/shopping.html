@@ -1,102 +1,103 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <section id="store-search">
-        <div class="flex-sidebyside flex-for-col" id="store-flexbox">
-            <header>
-                <h3>Search for your store</h3>
-            </header>
-            <form action="/list" class="flex-for-col" id="search-form" method="POST">
-                <input type="text" class="bordered-input-box" id="search-store-field" name="searched-store">
-                <button id="form-btn">Add Store</button>
-            </form>
-        </div>
-        <div class="flex-sidebyside flex-for-col" id="item-flexbox">
-            <header>
-                <h3>Add your items</h3>
-            </header>
-            <form action="/add_item" method="POST" class="flex-for-col">
-                <select name="selected-store" id="store-select-dropdown">
-                    <option value="default" selected disabled>Please select a store</option>
-                    {% for store in stores %}
-                        <option value="{{ store.id }}">{{ store.store }}, {{ store.location }}</option>
-                    {% endfor %}
-                </select>
-                <div class="col-flex-btn-stack col-flex-btn-centered">
-                    <input type="text" name="added-item" class="bordered-input-box" id="added-item" placeholder="Enter an item">
-                    <button id="add-item-btn">Add Item</button>
-                </div>
-            </form>
-        </div>
-    </section>
-    {% if entity == 'item' %}
-    <div class="modal">
-        <div class="modal-box">
-            <div class="modal-content">
-                <h1>Item already exists</h1>
-                <div class="centering-container repeat-add">
-                    <form class="form-for-goBack" action="">
-                        <button>Go back to add another item</button>
-                    </form>
-                    <form class="leave-page" action="/">
-                        <button>Go to Edit Item</button>
-                    </form>
-                </div>
+<section id="store-search">
+    <div class="flex-sidebyside flex-for-col" id="store-flexbox">
+        <header>
+            <h3>Search for your store</h3>
+        </header>
+        <form action="/list" class="flex-for-col" id="search-form" method="POST">
+            <input type="text" class="bordered-input-box" id="search-store-field" name="searched-store">
+            <button id="form-btn">Add Store</button>
+        </form>
+    </div>
+    <div class="flex-sidebyside flex-for-col" id="item-flexbox">
+        <header>
+            <h3>Add your items</h3>
+        </header>
+        <form action="/add_item" method="POST" class="flex-for-col">
+            <select name="selected-store" id="store-select-dropdown">
+                <option value="default" selected disabled>Please select a store</option>
+                {% for store in stores %}
+                <option value="{{ store.id }}">{{ store.store }}, {{ store.location }}</option>
+                {% endfor %}
+            </select>
+            <div class="col-flex-btn-stack col-flex-btn-centered">
+                <input type="text" name="added-item" class="bordered-input-box" id="added-item"
+                    placeholder="Enter an item">
+                <button id="add-item-btn">Add Item</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% if entity == 'item' %}
+<div class="modal">
+    <div class="modal-box">
+        <div class="modal-content">
+            <h1>Item already exists</h1>
+            <div class="centering-container repeat-add">
+                <form class="form-for-goBack" action="">
+                    <button>Go back to add another item</button>
+                </form>
+                <form class="leave-page" action="/">
+                    <button>Go to Edit Item</button>
+                </form>
             </div>
         </div>
     </div>
-    {% elif entity == 'store' %}
-    <div class="modal">
-        <div class="modal-box">
-            <div class="modal-content">
-                <h1>Store already exists</h1>
-                <div class="centering-container repeat-add">
-                    <form class="form-for-goBack" action="">
-                        <button class="go-back">Go back to add another Store</button>
-                    </form>
-                    <form class="leave-page" action="/">
-                        <button>Go to Delete Store</button>
-                    </form>
-                </div>
+</div>
+{% elif entity == 'store' %}
+<div class="modal">
+    <div class="modal-box">
+        <div class="modal-content">
+            <h1>Store already exists</h1>
+            <div class="centering-container repeat-add">
+                <form class="form-for-goBack" action="">
+                    <button class="go-back">Go back to add another Store</button>
+                </form>
+                <form class="leave-page" action="/">
+                    <button>Go to Delete Store</button>
+                </form>
             </div>
         </div>
     </div>
-    {% endif %}
-    {% if added == 'store' %}
-        <div class="modal">
-            <div class="modal-box">
-                <div class="modal-content">
-                    {% set location = stores[-1].location %}
-                    <h1>Store {{ name }},{{ location }} added!</h1>
-                    <div class="centering-container repeat-add">
-                        <form class="form-for-goBack" action="">
-                            <button class="go-back">Go back to add another Store or Items to your Stores</button>
-                        </form>
-                    </div>
-                </div>
+</div>
+{% endif %}
+{% if added == 'store' %}
+<div class="modal">
+    <div class="modal-box">
+        <div class="modal-content">
+            {% set location = stores[-1].location %}
+            <h1>Store {{ name }},{{ location }} added!</h1>
+            <div class="centering-container repeat-add">
+                <form class="form-for-goBack" action="">
+                    <button class="go-back">Go back to add another Store or Items to your Stores</button>
+                </form>
             </div>
         </div>
-    {% elif added == 'item' %}
-        <div class="modal">
-            <div class="modal-box">
-                <div class="modal-content">
-                    {% for store in stores %}
-                        {% if store.id|int == store_id|int %}
-                        <h1>Item {{ name }} added to Store {{ store.store }}, {{ store.location }}!</h1>
-                        {% endif %}
-                    {% endfor %}
-                    <div class="centering-container repeat-add">
-                        <form class="form-for-goBack" action="">
-                            <button class="go-back">Go back to add another Item</button>
-                        </form>
-                        <form class="leave-page" action="/">
-                            <button>Go to Edit Item</button>
-                        </form>
-                    </div>
-                </div>
+    </div>
+</div>
+{% elif added == 'item' %}
+<div class="modal">
+    <div class="modal-box">
+        <div class="modal-content">
+            {% for store in stores %}
+            {% if store.id|int == store_id|int %}
+            <h1>Item {{ name }} added to Store {{ store.store }}, {{ store.location }}!</h1>
+            {% endif %}
+            {% endfor %}
+            <div class="centering-container repeat-add">
+                <form class="form-for-goBack" action="">
+                    <button class="go-back">Go back to add another Item</button>
+                </form>
+                <form class="leave-page" action="/">
+                    <button>Go to Edit Item</button>
+                </form>
             </div>
         </div>
-    {% endif %}
-    <script src="{{ url_for('static',filename='shopping.js') }}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ key }}&libraries=places&callback=initMap"></script>
+    </div>
+</div>
+{% endif %}
+<script src="{{ url_for('static',filename='shopping.js') }}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ key }}&libraries=places&callback=initMap"></script>
 {% endblock %}
