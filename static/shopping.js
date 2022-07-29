@@ -6,46 +6,53 @@ const searchButton = document.querySelector('#search-button');
 const addItem = document.querySelector('#add-item-btn');
 const storeSelect = document.querySelector('#store-select-dropdown');
 const addedItemField = document.querySelector('#added-item');
+const modal = document.querySelector('.modal');
 const formBtn = document.querySelector('#form-btn');
 const goBackBtns = document.querySelectorAll('.go-back');
-const modal = document.querySelector('.modal');
 const formsForGoingBack = document.querySelectorAll('.form-for-goBack');
-const leavePage = document.querySelector('.leave-page');
-const btnLeavePage = document.querySelector('.leave-page button')
+const leavePageForms = document.querySelectorAll('.leave-page');
+const leavePageBtns = document.querySelectorAll('.leave-page button')
 let autoComplete;
 formBtn.disabled = true;
 
+if (storeSelect.value === 'default') {
+    addItem.disabled = true;
+}
+
 function submitForm() {
     leavePage.submit();
-}
-
-if (leavePage) {
-    leavePage.addEventListener('submit', function (event) {
-        event.preventDefault();
-    });
-    btnLeavePage.addEventListener('click', function () {
-        toggleModal();
-        setTimeout("submitForm()", 500);
-    });
-}
-
-if (modal) {
-    setTimeout(() => {
-        modal.classList.toggle('show-modal');
-    }, "100");
 }
 
 function toggleModal() {
     modal.classList.toggle('show-modal');
 }
 
+if (leavePageForms) {
+    for (const leavePage of leavePageForms) {
+        leavePage.addEventListener('submit', function (event) {
+            event.preventDefault();
+        });
+    }
+    for (const leavePageBtn of leavePageBtns) {
+        leavePageBtn.addEventListener('click', function () {
+            toggleModal();
+            const leavePageForm = leavePageBtn.parentNode;
+            setTimeout(function () {
+                leavePageForm.submit();
+            }, 500);
+        });
+    }
+}
+
+if (modal) {
+    setTimeout(() => {
+        modal.classList.toggle('show-modal');
+    }, "350");
+}
+
 formsForGoingBack.forEach((element) => {
     element.addEventListener('submit', toggleModal);
 });
-
-if (storeSelect.value === 'default') {
-    addItem.disabled = true;
-}
 
 function formBtnEnable(event) {
     if (searchField.value) {

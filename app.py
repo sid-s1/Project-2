@@ -100,7 +100,7 @@ def signup_process():
             app_service.create_user_on_db(first_name,email,hashed_password,home_latitude,home_longitude)
             return redirect('/login')
         else:
-            return render_template('entity_exists.html',entity='email')
+            return render_template('signup_page.html',key=api_key,user=session.get('email'),entity='email')
     else:
         return render_template('signup_page.html',key=api_key,user=session.get('email'),invalid_email=True)
 

@@ -48,7 +48,7 @@
         </div>
     </section>
     {% if invalid_email == True %}
-    <div class="modal show-modal">
+    <div class="modal">
         <div class="modal-box">
             <div class="modal-content">
                 <h1>Check Email</h1>
@@ -64,9 +64,22 @@
                     </ul>
                 </div>
                 <div class="centering-container">
-                    <form action="/signup">
-                        <button id="try-again">Please try again</button>
+                    <button id="try-again">Please try again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if entity == 'email' %}
+    <div class="modal">
+        <div class="modal-box">
+            <div class="modal-content">
+                <h1>Email already exists</h1>
+                <div class="centering-container repeat-add">
+                    <form action="/login" class="leave-page">
+                        <button>Please login</button>
                     </form>
+                    <button id="try-again">Cancel, signup with another email</button>
                 </div>
             </div>
         </div>

@@ -12,7 +12,48 @@ const checkLenLi = document.querySelector('#eight');
 const allPwLis = document.querySelectorAll('.pointers-pw li');
 const guidelines = document.querySelector('.pointers-pw');
 const warning = document.querySelector('#guidelines-notif');
+const tryAgain = document.querySelector('#try-again');
+const modal = document.querySelector('.modal');
 let warningChanged = false;
+const leavePage = document.querySelector('.leave-page');
+const btnLeavePage = document.querySelector('.leave-page button')
+
+function changeWidthBlur(event) {
+    event.target.style.width = "225px";
+    event.target.style.minWidth = "225px";
+}
+
+function changeWidthFocus(event) {
+    event.target.style.width = (event.target.value.length + 1) * 8 + "px";
+    event.target.style.minWidth = "300px";
+}
+
+searchField.addEventListener('focus', changeWidthFocus);
+searchField.addEventListener('blur', changeWidthBlur);
+
+function submitForm() {
+    leavePage.submit();
+}
+
+function toggleModal() {
+    modal.classList.toggle('show-modal');
+}
+
+if (leavePage) {
+    leavePage.addEventListener('submit', function (event) {
+        event.preventDefault();
+    });
+    btnLeavePage.addEventListener('click', function () {
+        toggleModal();
+        setTimeout("submitForm()", 500);
+    });
+}
+
+if (modal) {
+    setTimeout(() => {
+        modal.classList.toggle('show-modal');
+    }, "350");
+}
 
 changeSubmitBtn(signupBtn, false);
 
@@ -169,3 +210,5 @@ function checkLen(password) {
 [password, retypedPassword].forEach((element) => {
     element.addEventListener('input', validityChecks);
 });
+
+tryAgain.addEventListener('click', toggleModal);
