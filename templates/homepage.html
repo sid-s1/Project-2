@@ -49,9 +49,9 @@
         </div>
     </section>
     {% else %}
-        <header>
+        <header id="alt-header">
             {% if user != None %}
-                <h3>Create your own shopping list and set a route!</h3>
+                <h3>Hi, {{ user_name }}! See video below or start creating your list now!</h3>
             {% else %}
                 <h3>Create your own shopping list and set a route! Signup today!</h3>
             {% endif %}

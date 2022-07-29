@@ -1,5 +1,5 @@
 * {
-    font-family: 'El Messiri', sans-serif;
+    font-family: 'Philosopher',sans-serif;
 }
 body {
     background-color: rgb(249, 249, 212);
@@ -113,7 +113,7 @@ header {
     justify-content: center;
     align-items: center;
 }
-.homepage header h3 {
+.homepage header h3, #alt-header h3 {
     margin-top: 4%;
     margin-left: 5%;
 }
@@ -272,6 +272,7 @@ button, .turn-anchor-btn, .centered-btn {
     width: fit-content;
 }
 .logout-btn {
+    font-size: 1.1rem;
     width: 250px;
     height: 250px;
 }

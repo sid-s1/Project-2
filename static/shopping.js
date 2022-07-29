@@ -47,7 +47,6 @@ if (leavePageForms) {
 }
 
 addItem.addEventListener('click', function () {
-    toggleModal();
     const trial = addItem.parentNode;
     const formTrial = trial.parentNode;
     setTimeout(function () {

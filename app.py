@@ -58,19 +58,27 @@ def shopping_list():
 
 @app.route('/list',methods=["POST"])
 def shopping_list_search():
+    email = session.get('email')
     searched_store = request.form.get('searched-store')
     user_id = app_service.retrieve_userID(session.get('email'))
 
-    store_search_json = app_service.store_search_json(searched_store)
+    store_search_json = app_service.store_search_json(searched_store,email)
     place_id = app_service.get_place_id(store_search_json)
     store_name = app_service.get_store_name(store_search_json)
+    arr_store_name = store_name.split(",")
+    print(arr_store_name)
+    if len(arr_store_name) > 2:
+        new_store_name = arr_store_name[0] + "," + arr_store_name[1]
+    else:
+        new_store_name = store_name
 
     if app_service.check_store_exists(user_id,store_name) != 'exists':
         app_service.store_place_details(place_id,store_name,user_id)
         email = session.get('email')
         user_name = app_service.retrieve_userName(email)
         stores_and_items = app_service.retrieve_stores_items(email)
-        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='store',name=store_name,user_name=user_name)
+        print(new_store_name)
+        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='store',name=new_store_name,user_name=user_name)
     else:
         return render_template('shopping.html',entity='store',key=api_key,user=session.get('email'))
 
@@ -173,11 +181,11 @@ def add_item_page():
 
 @app.route('/add_item',methods=["POST"])
 def add_item_action():
+    email = session.get('email')
     store_id = request.form.get('selected-store')
     added_item = request.form.get('added-item')
     user_id = app_service.retrieve_userID(session.get('email'))
     if app_service.store_items(user_id,store_id,added_item) != 'exists' and app_service.store_items(user_id,store_id,added_item) != None:
-        email = session.get('email')
         user_name = app_service.retrieve_userName(email)
         stores_and_items = app_service.retrieve_stores_items(email)
         return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='item',name=added_item,store_id=store_id,user_name=user_name)

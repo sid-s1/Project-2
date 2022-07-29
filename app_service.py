@@ -9,8 +9,11 @@ payload={}
 headers = {}
 place_id_dict = {}
 
-def store_search_json(store):
-    url = f"https://maps.googleapis.com/maps/api/place/autocomplete/json?input={store}&location=-33.814999%2C151.001114&radius=10000000&strictbounds=true&key={api_key}"
+def store_search_json(store,email):
+    user_address = retrieve_address(email)
+    lat = user_address[0]
+    long = user_address[1]
+    url = f"https://maps.googleapis.com/maps/api/place/autocomplete/json?input={store}&location={lat}%2C{long}&radius=10000000&key={api_key}"
     response = requests.request("GET", url, headers=headers, data=payload)
     return response.json()
 
@@ -19,9 +22,8 @@ def get_place_id(response):
         return response['predictions'][0]['place_id']
 
 def get_store_name(response):
-    print(response)
     if len(response['predictions']) > 0:
-        return response['predictions'][0]['structured_formatting']['main_text']
+        return response['predictions'][0]['structured_formatting']['main_text'] + "," + response['predictions'][0]['structured_formatting']['secondary_text']
 
 def store_place_details(place_id,store_name,user_id):
     if check_store_exists(user_id,store_name) != 'exists':
