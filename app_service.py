@@ -178,6 +178,7 @@ def check_store_exists(user_id,store_to_add):
 def check_item_exists(item_to_add,string):
     items = string.split(',')
     for item in items:
+        print(item)
         if item.lower() == item_to_add.lower():
             return True
     return False
@@ -202,8 +203,6 @@ def store_items(user_id,store_id,item):
             """,(items,items_table_id))
             conn.commit()
             return 'success'
-        else:
-            return 'exists'
     else:
         cur.execute("""
         INSERT INTO items(user_id,store_id,item_list) VALUES(%s,%s,%s)
