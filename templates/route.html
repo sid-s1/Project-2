@@ -2,13 +2,13 @@
 
 {% block body %}
     <header id="route-header">
-        <h3>{{ user_name }}, here is your route to finish your shopping!</h3>
+        <h3>{{ user_name }}, here is your route to finish your shopping list!</h3>
     </header>
     <section class="centered-list-display">
         {% if ids %}
             <div class="centered-list-child flex-for-col" id="map-flexbox">
                 <iframe width="100%" height="100%" frameborder="0" style="border:0" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/directions?key={{ key }}&origin={{ lat }},{{ long }}
-                &destination={{ lat }},{{ long }}&waypoints={{ ids }}&waypoints=optimizeWaypoints:true">
+                &destination={{ lat }},{{ long }}&waypoints={{ ids }}&avoid=tolls|highways&waypoints=optimizeWaypoints:true">
                 </iframe>
             </div>
         {% else %}

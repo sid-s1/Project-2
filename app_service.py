@@ -50,23 +50,28 @@ def store_place_details(place_id,store_name,user_id):
     else:
         return 'exists'
 
-def all_placeids_for_maps(user_id):
+def placeids_for_maps(user_id):
     waypoints_string = ""
-    ids = []
     conn = psycopg2.connect(DATABASE_URL)
     cur = conn.cursor()
     cur.execute("""
-    SELECT place_id FROM stores_1 WHERE user_id=%s ORDER BY distance_from_origin DESC
+    SELECT store_id FROM items WHERE user_id=%s
     """,(user_id,))
     results = cur.fetchall()
-    cur.close()
     for row in results:
-        ids.append(row[0])
-    while ids:
-        if len(ids) != 1:
-            waypoints_string = waypoints_string + f"place_id:{ids.pop()}|"
-        elif len(ids) == 1:
-            waypoints_string = waypoints_string + f"place_id:{ids.pop()}"
+        store_id = row[0]
+        cur.execute("""
+        SELECT item_list FROM items WHERE user_id=%s AND store_id=%s
+        """,(user_id,store_id))
+        if cur.rowcount != 0:
+            item_list = cur.fetchall()[0][0]
+            if len(item_list) > 2:
+                cur.execute("""
+                SELECT place_id FROM stores_1 WHERE user_id=%s AND id=%s
+                """,(user_id,store_id))
+                place_id = cur.fetchall()[0][0]
+                waypoints_string = waypoints_string + f"place_id:{place_id}|"
+    waypoints_string = waypoints_string[0:len(waypoints_string) - 1]
     return waypoints_string
 
 def geocode_address(address):

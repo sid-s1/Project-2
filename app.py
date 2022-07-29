@@ -21,7 +21,7 @@ def index():
         stores_and_items = app_service.retrieve_stores_items(email)
         user_id = app_service.retrieve_userID(email)
         lat_long = app_service.retrieve_address(email)
-        all_placeids_for_maps = app_service.all_placeids_for_maps(user_id)
+        all_placeids_for_maps = app_service.placeids_for_maps(user_id)
         return render_template('homepage.html',key=api_key,ids=all_placeids_for_maps,user=session.get('email'),lat=lat_long[0],long=lat_long[1],stores=stores_and_items,user_id=user_id,user_name=user_name)
     else:
         return render_template('homepage.html',user=session.get('email'),key=api_key)
@@ -82,7 +82,6 @@ def shopping_list_search():
     else:
         return render_template('shopping.html',entity='store',key=api_key,user=session.get('email'))
 
-
 @app.route('/display')
 def list_route_display():
     email = session.get('email')
@@ -91,7 +90,7 @@ def list_route_display():
         stores_and_items = app_service.retrieve_stores_items(email)
         user_id = app_service.retrieve_userID(email)
         lat_long = app_service.retrieve_address(email)
-        all_placeids_for_maps = app_service.all_placeids_for_maps(user_id)
+        all_placeids_for_maps = app_service.placeids_for_maps(user_id)
         return render_template('route.html',key=api_key,ids=all_placeids_for_maps,user=session.get('email'),lat=lat_long[0],long=lat_long[1],stores=stores_and_items,user_id=user_id,user_name=user_name)
     else:
         return render_template('login_first.html',user=session.get('email'))
@@ -187,16 +186,22 @@ def add_item_action():
     added_item = request.form.get('added-item')
     user_id = app_service.retrieve_userID(session.get('email'))
     current_items = app_service.retrieve_items(user_id,store_id)
-    if app_service.check_item_exists(added_item,current_items) == False:
-        changed = True
+    if app_service.retrieve_items(user_id,store_id):
+        if app_service.check_item_exists(added_item,current_items) == False:
+            changed = True
+            app_service.store_items(user_id,store_id,added_item)
+            user_name = app_service.retrieve_userName(email)
+            stores_and_items = app_service.retrieve_stores_items(email)
+            return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='item',entity=None,name=added_item,store_id=store_id,user_name=user_name)
+        else:
+            if changed == False:
+                user_name = app_service.retrieve_userName(email)
+                return render_template('shopping.html',key=api_key,user=session.get('email'),entity='item',user_name=user_name,added=None)
+    else:
         app_service.store_items(user_id,store_id,added_item)
         user_name = app_service.retrieve_userName(email)
         stores_and_items = app_service.retrieve_stores_items(email)
         return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='item',entity=None,name=added_item,store_id=store_id,user_name=user_name)
-    else:
-        if changed == False:
-            user_name = app_service.retrieve_userName(email)
-            return render_template('shopping.html',key=api_key,user=session.get('email'),entity='item',user_name=user_name,added=None)
 
 if __name__ == '__main__':
     app.run(debug=True)
