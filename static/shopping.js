@@ -57,7 +57,7 @@ addItem.addEventListener('click', function () {
 if (modal) {
     setTimeout(() => {
         modal.classList.toggle('show-modal');
-    }, 10);
+    }, 500);
 }
 
 formsForGoingBack.forEach((element) => {

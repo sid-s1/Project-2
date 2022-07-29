@@ -177,7 +177,7 @@ def add_item_page():
         stores_and_items = app_service.retrieve_stores_items(email)
         return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,user_name=user_name)
     else:
-        return render_template('login_page.html',user=session.get('email'))
+        return render_template('login_first.html',user=session.get('email'))
 
 @app.route('/add_item',methods=["POST"])
 def add_item_action():
