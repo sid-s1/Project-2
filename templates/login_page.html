@@ -23,5 +23,63 @@
             </form>
         </div>
     </section>
+    {% if unmatched %}
+    <div class="modal">
+        <div class="modal-box">
+            <div class="modal-content">
+                <h1>Email or Password don't match</h1>
+                <div class="centering-container repeat-add">
+                    <form method="dialog" class="close-modal">
+                        <button>Go back to try again</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if no_email %}
+    <div class="modal">
+        <div class="modal-box">
+            <div class="modal-content">
+                <h1>Email not registered with us</h1>
+                <div class="centering-container repeat-add">
+                    <form method="dialog" class="close-modal">
+                        <button>Try again</button>
+                    </form>
+                    <form action="/signup" class="exit-page">
+                        <button>Go sign up!</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
     <script src="{{ url_for('static',filename='login.js') }}"></script>
+    <script>
+        const modal = document.querySelector('.modal');
+        const closeButton = document.querySelector('.close-modal > button');
+        const formExit = document.querySelector('.exit-page');
+        const exitButton = document.querySelector('.exit-page > button');
+        if(formExit) {
+            formExit.addEventListener('submit',function(event){
+                event.preventDefault();
+            });
+        }
+        if(modal) {
+            modal.classList.toggle('show-modal');
+        }
+        if(closeButton) {
+            closeButton.addEventListener('click',function(){
+                modal.classList.toggle('show-modal');
+            });
+        }
+        if(exitButton) {
+            exitButton.addEventListener('click',function(){
+                modal.classList.toggle('show-modal');
+                setTimeout(function() {
+                    formExit.submit();
+                },1000);
+            });
+        }
+    </script>
 {% endblock %}

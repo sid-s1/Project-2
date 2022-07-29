@@ -106,4 +106,31 @@
 {% endif %}
 <script src="{{ url_for('static',filename='shopping.js') }}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ key }}&libraries=places&callback=initMap"></script>
+<script>
+    const modal = document.querySelector('.modal');
+    const closeButton = document.querySelector('.form-for-goBack > button');
+    const formExit = document.querySelector('.leave-page');
+    const exitButton = document.querySelector('.leave-page > button');
+    if (formExit) {
+        formExit.addEventListener('submit', function (event) {
+            event.preventDefault();
+        });
+    }
+    if (modal) {
+        modal.classList.toggle('show-modal');
+    }
+    if (closeButton) {
+        closeButton.addEventListener('click', function () {
+            modal.classList.toggle('show-modal');
+        });
+    }
+    if (exitButton) {
+        exitButton.addEventListener('click', function () {
+            modal.classList.toggle('show-modal');
+            setTimeout(function () {
+                formExit.submit();
+            }, 1000);
+        });
+    }
+</script>
 {% endblock %}

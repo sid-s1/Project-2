@@ -178,7 +178,6 @@ def check_store_exists(user_id,store_to_add):
 def check_item_exists(item_to_add,string):
     items = string.split(',')
     for item in items:
-        print(item)
         if item.lower() == item_to_add.lower():
             return True
     return False

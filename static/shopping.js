@@ -6,12 +6,8 @@ const searchButton = document.querySelector('#search-button');
 const addItem = document.querySelector('#add-item-btn');
 const storeSelect = document.querySelector('#store-select-dropdown');
 const addedItemField = document.querySelector('#added-item');
-const modal = document.querySelector('.modal');
 const formBtn = document.querySelector('#form-btn');
 const goBackBtns = document.querySelectorAll('.go-back');
-const formsForGoingBack = document.querySelectorAll('.form-for-goBack');
-const leavePageForms = document.querySelectorAll('.leave-page');
-const leavePageBtns = document.querySelectorAll('.leave-page button');
 let autoComplete;
 formBtn.disabled = true;
 
@@ -22,47 +18,6 @@ if (storeSelect.value === 'default') {
 function submitForm() {
     leavePage.submit();
 }
-
-function toggleModal() {
-    if (modal) {
-        modal.classList.toggle('show-modal');
-    }
-}
-
-if (leavePageForms) {
-    for (const leavePage of leavePageForms) {
-        leavePage.addEventListener('submit', function (event) {
-            event.preventDefault();
-        });
-    }
-    for (const leavePageBtn of leavePageBtns) {
-        leavePageBtn.addEventListener('click', function () {
-            toggleModal();
-            const leavePageForm = leavePageBtn.parentNode;
-            setTimeout(function () {
-                leavePageForm.submit();
-            }, 500);
-        });
-    }
-}
-
-addItem.addEventListener('click', function () {
-    const trial = addItem.parentNode;
-    const formTrial = trial.parentNode;
-    setTimeout(function () {
-        formTrial.submit();
-    }, 500);
-});
-
-if (modal) {
-    setTimeout(() => {
-        modal.classList.toggle('show-modal');
-    }, 10);
-}
-
-formsForGoingBack.forEach((element) => {
-    element.addEventListener('submit', toggleModal);
-});
 
 function formBtnEnable() {
     if (searchField.value) {
