@@ -201,6 +201,7 @@ def store_items(user_id,store_id,item):
             UPDATE items SET item_list=%s WHERE id=%s
             """,(items,items_table_id))
             conn.commit()
+            return 'success'
         else:
             return 'exists'
     else:
@@ -208,6 +209,7 @@ def store_items(user_id,store_id,item):
         INSERT INTO items(user_id,store_id,item_list) VALUES(%s,%s,%s)
         """,(user_id,store_id,item))
         conn.commit()
+        return 'success'
     cur.close()
 
 def retrieve_items(user_id,store_id):
