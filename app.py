@@ -78,7 +78,7 @@ def shopping_list_search():
         user_name = app_service.retrieve_userName(email)
         stores_and_items = app_service.retrieve_stores_items(email)
         print(new_store_name)
-        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='store',name=new_store_name,user_name=user_name)
+        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='store',entity=None,name=new_store_name,user_name=user_name)
     else:
         return render_template('shopping.html',entity='store',key=api_key,user=session.get('email'))
 
@@ -188,7 +188,7 @@ def add_item_action():
     if app_service.store_items(user_id,store_id,added_item) != 'exists' and app_service.store_items(user_id,store_id,added_item) != None:
         user_name = app_service.retrieve_userName(email)
         stores_and_items = app_service.retrieve_stores_items(email)
-        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='item',name=added_item,store_id=store_id,user_name=user_name)
+        return render_template('shopping.html',key=api_key,user=session.get('email'),stores=stores_and_items,added='item',entity=None,name=added_item,store_id=store_id,user_name=user_name)
     else:
         user_name = app_service.retrieve_userName(email)
         return render_template('shopping.html',key=api_key,user=session.get('email'),entity='item',user_name=user_name)
