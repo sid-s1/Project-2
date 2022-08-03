@@ -108,13 +108,14 @@ def signup_process():
     email = request.form.get('email')
     password = request.form.get('entered_password')
     address = request.form.get('home')
+    secret_answer = request.form.get('sec_answer')
     if app_service.is_valid_email(email):
         if app_service.check_email_db(email) == False:
             hashed_password = app_service.hash(password)
             geocoded_address = app_service.geocode_address(address)
             home_latitude = geocoded_address[0]
             home_longitude = geocoded_address[1]
-            app_service.create_user_on_db(first_name,email,hashed_password,home_latitude,home_longitude)
+            app_service.create_user_on_db(first_name,email,hashed_password,home_latitude,home_longitude,secret_answer)
             return redirect('/login')
         else:
             user_name = app_service.retrieve_userName(email)
@@ -163,6 +164,47 @@ def logout():
     if action == 'Yes please':
         session.pop('email')
     return redirect('/')
+
+@app.route('/forgot_password')
+def forgot_password():
+    if session.get('email') == None:
+        return render_template('forgot_password.html',user=session.get('email'))
+    else:
+        email = session.get('email')
+        user_name = app_service.retrieve_userName(email)
+        return render_template('logged_in.html',user=email,user_name=user_name)
+
+@app.route('/forgot_password',methods=["POST"])
+def forgot_password_action():
+    if session.get('email') == None:
+        email = request.form.get('email')
+        user_answer = request.form.get('secret_answer')
+        if app_service.check_email_db(email):
+            registered_answer = app_service.retrieve_sec_answer(email)
+            if app_service.check_sec_answer(user_answer,registered_answer):
+                user_name = app_service.retrieve_userName(email)
+                return render_template('reset_password.html',email=email,user_name=user_name,user=session.get('email'))
+            else:
+                return render_template('forgot_password.html',wrong_secret=True,user=session.get('email'))
+        else:
+            return render_template('forgot_password.html',no_email=True,user=session.get('email'))
+    else:
+        email = session.get('email')
+        user_name = app_service.retrieve_userName(email)
+        return render_template('logged_in.html',user=email,user_name=user_name)
+
+@app.route('/secret_cred_check',methods=["POST"])
+def secret_cred():
+    if session.get('email') == None:
+        email = request.form.get('email')
+        entered_password = request.form.get('entered_password')
+        hashed_password = app_service.hash(entered_password)
+        app_service.change_user_pw(email,hashed_password)
+        return redirect('/login')
+    else:
+        email = session.get('email')
+        user_name = app_service.retrieve_userName(email)
+        return render_template('logged_in.html',user=email,user_name=user_name)
 
 @app.route('/add_item')
 def add_item_page():

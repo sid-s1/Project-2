@@ -94,15 +94,15 @@ def hash(password):
 def check_password(password,hashed_password):
     return bcrypt.checkpw(password.encode(),hashed_password.encode())
 
-def create_user_on_db(first_name,email,password,lat,long):
+def create_user_on_db(first_name,email,password,lat,long,sec_answer):
     if check_email_db(email):
         return 'exists'
     else:
         conn = psycopg2.connect(DATABASE_URL)
         cur = conn.cursor()
         cur.execute("""
-        INSERT INTO users(first_name,email,password,latitude,longitude) VALUES(%s,%s,%s,%s,%s)
-        """,(first_name,email,password,lat,long))
+        INSERT INTO users(first_name,email,password,latitude,longitude,secret) VALUES(%s,%s,%s,%s,%s,%s)
+        """,(first_name,email,password,lat,long,sec_answer))
         conn.commit()
         cur.close()
 
@@ -155,6 +155,27 @@ def retrieve_userName(email):
     """,(email,))
     user_name = cur.fetchall()[0][0]
     return user_name
+
+def retrieve_sec_answer(email):
+    conn = psycopg2.connect(DATABASE_URL)
+    cur = conn.cursor()
+    cur.execute("""
+    SELECT secret FROM users WHERE email=%s
+    """,(email,))
+    registered_answer = cur.fetchall()[0][0]
+    return registered_answer
+
+def check_sec_answer(submitted,registered):
+    return submitted.lower() == registered.lower()
+
+def change_user_pw(email,password):
+    conn = psycopg2.connect(DATABASE_URL)
+    cur = conn.cursor()
+    cur.execute("""
+    UPDATE users SET password=%s WHERE email=%s
+    """,(password,email))
+    conn.commit()
+    cur.close()
 
 def retrieve_stores(userID):
     stores = []
