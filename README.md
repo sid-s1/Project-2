@@ -1,6 +1,12 @@
 ![Shopping List | Route Generator](https://github.com/sid-s1/Project-2/blob/main/static/images/banner.png?raw=true)
 
-A web-app that allows you to add stores to your shopping list using Google Search API; you can then add items to each store; as you do that, this app will also create a route starting from your home address (that you used during sign-up) and add all the stores as waypoints returning back to home.
+## Web-App that allows you to
+- Add stores near your home to your Shopping List
+- Add different items to each of those stores
+- See a driving route 
+  - From your home 
+  - Going through each store (only with added items for ease) 
+  - Back to home
 
 ## Use App
 
