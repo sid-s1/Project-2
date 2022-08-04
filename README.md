@@ -2,7 +2,7 @@
 
 A web-app that allows you to add stores to your shopping list using Google Search API; you can then add items to each store; as you do that, this app will also create a route starting from your home address (that you used during sign-up) and add all the stores as waypoints returning back to home.
 
-## Link
+## Use App
 
 https://radiant-retreat-54789.herokuapp.com/
 
@@ -21,6 +21,32 @@ https://radiant-retreat-54789.herokuapp.com/
 4. gunicorn
 5. requests
 6. python-dotenv
+
+## Installation Directions
+1. All dependencies are noted in the "requirements.txt" file
+2. Install all dependencies by going to project folder on your terminal and typing: `python3 -r requirements.txt`
+
+## APIs
+
+1. **Google Autocomplete**: To predict search results based on what the user is typing
+2. **Google Geocoding**: To get latitude and longitude based on location (home) address
+3. **Google Details**: To get latitude and longitude based on place ID of selected store
+4. **Google Directions**: To get routing map from home address back to based, with waypoints set as each store
+
+## Configuration Directions
+1. In your project folder, create file ".env"
+2. In the format below, write down your Google api key and a secret key for cookie storage (length of your choice)
+   - `api_key="xxyyzzaabbcc"`
+   - `SECRET_KEY="abcabcabcabcabcaabcabcabcabcabca"`
+3. If you want to generate a random 16 or 32 digit key using python, type the following into your terminal:
+   - `python3`
+   - `import secrets`
+   - `secrets.token_hex(32)`
+4. Create database on your local machine:
+   - `psql postgres`
+   - `CREATE DATABASE my_db`
+5. Set up the database on your local machine using the provided "schema.sql" file:
+   - `psql my_db < sampleProjectFolder/schema.sql`
    
 ## Database Design
 
@@ -39,11 +65,16 @@ The database consists of three tables:
 
 ![ERD](https://github.com/sid-s1/Project-2/blob/main/static/images/ERD.jpg?raw=true)
 
-## APIs
+## Future Work
 
-1. **Google Autocomplete**: To predict search results based on what the user is typing
-2. **Google Geocoding**: To get latitude and longitude based on location (home) address
-3. **Google Details**: To get latitude and longitude based on place ID of selected store
-4. **Google Directions**: To get routing map from home address back to based, with waypoints set as each store
-
-Step by step as to what happens from the signup page through to the end?
+1. Modal box shows up that says "Thanks for signing up, go login now"
+2. Javascript prompt for "No commas please" as user adds items to their list
+3. Option to add quantity of each item in the list
+4. Management of quantity of each item for each store on the homepage
+5. Improve DB design (nullifying future work Point 2) so as to:
+   - Remove repetition of stores - multiple users might add the same store to their shopping list even if their list of items is different
+   - Better parsing and storing of items so as to remove the "comma" problem
+6. Media Queries for use on mobile devices
+7. Adding a "forgot my password" section to login page &#10004;
+8. Restricting users to only use real email addresses
+9. Sending account confirmation emails to users and sending real password reset emails
