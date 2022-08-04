@@ -13,6 +13,14 @@ https://radiant-retreat-54789.herokuapp.com/
 4. Python
 5. Flask
 6. PostgreSQL
+
+## Dependencies for Python
+1. flask
+2. psycopg2
+3. bcrypt
+4. gunicorn
+5. requests
+6. python-dotenv
    
 ## Database Design
 
@@ -31,7 +39,11 @@ The database consists of three tables:
 
 ![ERD](https://github.com/sid-s1/Project-2/blob/main/static/images/ERD.jpg?raw=true)
 
-## Features
+## APIs
 
+1. **Google Autocomplete**: To predict search results based on what the user is typing
+2. **Google Geocoding**: To get latitude and longitude based on location (home) address
+3. **Google Details**: To get latitude and longitude based on place ID of selected store
+4. **Google Directions**: To get routing map from home address back to based, with waypoints set as each store
 
-
+Step by step as to what happens from the signup page through to the end?
