@@ -24,7 +24,8 @@ https://radiant-retreat-54789.herokuapp.com/
 
 ## Installation Directions
 1. All dependencies are noted in the "requirements.txt" file
-2. Install all dependencies by going to project folder on your terminal and typing: `python3 -r requirements.txt`
+2. Install all dependencies by going to project folder on your terminal and typing: 
+   - `python3 -r requirements.txt`
 
 ## APIs
 
@@ -47,6 +48,14 @@ https://radiant-retreat-54789.herokuapp.com/
    - `CREATE DATABASE my_db`
 5. Set up the database on your local machine using the provided "schema.sql" file:
    - `psql my_db < sampleProjectFolder/schema.sql`
+6. Create a virtual environment. Go to your project folder and then:
+   - `python3 -m venv venv`
+7. To start your virtual environment:
+   - `source venv/bin/activate`
+8. To run app on your local machine:
+   - `python3 app.py`
+9. Based on the default port you've set, you will be able to view the app. For me, I had to enter the following in my browser:
+    - `localhost:5000`
    
 ## Database Design
 
