@@ -385,7 +385,3 @@ img, video {
     width: 400px;
     height: 400px;
 }
-#flex-signup {
-    display: flex;
-    flex-wrap: wrap;
-}
