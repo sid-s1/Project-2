@@ -14,11 +14,12 @@ https://radiant-retreat-54789.herokuapp.com/
 
 ## Technologies Used
 1. HTML
-2. CSS
-3. Javascript
-4. Python
-5. Flask
-6. PostgreSQL
+2. Jinja2
+3. CSS
+4. Javascript
+5. Python
+6. Flask
+7. PostgreSQL
 
 ## Dependencies for Python
 1. flask
