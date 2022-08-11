@@ -69,7 +69,6 @@ function changeWidthFocus(event) {
 function initMap() {
     autoComplete = new google.maps.places.Autocomplete(searchField, {
         types: ['store', 'convenience_store', 'department_store', 'drugstore', 'supermarket'],
-        componentRestrictions: { 'country': ['AU'] },
         fields: ['place_id', 'geometry', 'name']
     });
     autoComplete.addListener('place_changed', onPlaceChanged);

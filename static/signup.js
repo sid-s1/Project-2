@@ -37,7 +37,6 @@ for (const pwLi of allPwLis) {
 function initMap() {
     autoComplete = new google.maps.places.Autocomplete(searchField, {
         types: ['street_address', 'subpremise', 'intersection', 'premise'],
-        componentRestrictions: { 'country': ['AU'] },
         fields: ['place_id', 'geometry', 'name']
     });
     autoComplete.addListener('place_changed', onPlaceChanged);
